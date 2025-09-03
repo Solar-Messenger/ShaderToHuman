@@ -186,10 +186,6 @@
                 generateCode = false;
             }
 
-            // all gen... will appends to g_imTxt
-//            if(generateCode)
-//                genComment("Start generated code ---");
-
             if (get("Tabs") == "Gather") {
                 let subElements = "init|printTxt|printInt|printHex|printFloat|printShapes|progress";
                 tab("Gather", null, subElements);
@@ -331,8 +327,6 @@
             }
 
             if(generateCode) {
-//                genComment("End generated code ---");
-
 //            logCode(g_imTxt);
                 const backendCode = getBackendCode(g_CodeType);
                 if(backendCode !== undefined)
@@ -343,22 +337,6 @@
                 }
             }
         }
-
-        // vec2 pos
-        // vec3 rgb
-        function drawPoint(pos, rgb) {
-            comment(`point(context, vec2(${pos.x},${pos.y}), vec3(${rgb.x},${rgb.y},${rgb.z}));`);
-        }
-
-        var vec2 = function (x, y) {
-            this.x = x || 0;
-            this.y = y || 0;
-        };
-        var vec3 = function (x, y, z) {
-            this.x = x || 0;
-            this.y = y || 0;
-            this.z = z || 0;
-        };
 
 
         // ------------------

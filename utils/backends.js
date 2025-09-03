@@ -15,10 +15,6 @@ class IBackend {
         this.typeMap = {};
     }
 
-    comment(txt) {
-        this.code += "// " + txt + "\n";
-    }
-
     genRetType = type => {
         if (type in this.typeMap) {
             return this.typeMap[type];

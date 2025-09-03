@@ -91,13 +91,6 @@ function genSetup(codeType) {
     return false;
 }
 
-function genComment(txt) {
-    g_Backend.comment(txt);
-    //g_imTxt += "// " + txt + "\n";
-
-     for (var i = 0; i < g_backends.length; ++i)
-         g_backends[i].comment(txt);
-}
 
 // used globals: g_CodeType
 // @param type HLSL name e.g. "float2x2|float3x3|float4x4" or "quat"
