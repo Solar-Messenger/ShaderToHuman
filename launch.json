@@ -3,5 +3,5 @@
     "type": "chrome",
     "request": "launch",
     "name": "Launch ShaderToHuman in browser",
-    "program": "${workspaceFolder}\\ShaderToHuman.html"
+    "program": "${workspaceFolder}\\index.html"
 }

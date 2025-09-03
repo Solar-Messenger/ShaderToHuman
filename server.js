@@ -5,7 +5,7 @@ const utils = require('./utils/utils') // utils.js
 
 const port = 3000;
 const hostname = '127.0.0.1';
-const index = "ShaderToHuman.html"
+const index = "index.html"
 
 // Serve static files from the 'root' directory
 app.use(express.static(__dirname));
