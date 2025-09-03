@@ -117,17 +117,23 @@ function genWebGlCode(txt, fileName){
     backend.genCode(txt, fileName);
 }
 
+// @return prepared code
+function prepareSourceCode(code) {
+    console.assert(code != null);
+    console.assert(code, "cannot find the input file");
+    code = code.replaceAll("//!KEEP ", "");
+    code = code.replace(/^[ \t]*\r?\n/gm, '');  // remove more than single empty lines
+    return code;
+}
+
 // stores output in g_Backend for different backends
 // @param fileName string for debugging, may be null (e.g. when called from Sandbox)
-function genBackends(hlslCode, fileName) {
-
-    console.assert(hlslCode, "cannot find the input file");
-    hlslCode = hlslCode.replaceAll("//!KEEP ", "");
-    hlslCode = hlslCode.replace(/^[ \t]*\r?\n/gm, '');  // remove more than single empty lines
-
-    console.assert(hlslCode != null);
+function genBackends(hlslCode, webGLCode, fileName) {
+    hlslCode = prepareSourceCode(hlslCode);
     g_Backend.genCode(hlslCode, fileName);
-    genWebGlCode(hlslCode, fileName);
+
+    webGLCode = prepareSourceCode(webGLCode);
+    genWebGlCode(webGLCode, fileName);
 }
 
 // @param filename e.g. "public/docs/intro_0.hlsl"
@@ -135,16 +141,18 @@ function getPrettyCodeFile(hlslFileName) {
 
     console.assert(hlslFileName.endsWith(".hlsl"), "fileName needs to have .hlsl extension");
 
-    let hlslCode = readCodeFile(hlslFileName);
+    // We have preprocesssed .glsl files already 
+    let txtExtension = ".hlsl";
+    if(g_CodeType == 'GLSL')
+        txtExtension = ".glsl";
+
+    let txtFileName = hlslFileName.replace(/\.hlsl$/, txtExtension);
+    let txtCode = readCodeFile(txtFileName);
     
-    console.assert(hlslCode, "cannot find the input file");
+    let webGLFileName = hlslFileName.replace(/\.hlsl$/, ".glsl");
+    let webGLCode = readCodeFile(webGLFileName);
 
-    let glslFileName = hlslFileName.replace(/\.hlsl$/, ".glsl");
-
-    let glslCode = readCodeFile(glslFileName);
-
-//    genBackends(hlslCode, hlslFileName);
-    genBackends(glslCode, hlslFileName);
+    genBackends(txtCode, webGLCode, hlslFileName);
 }
 
 // Sandbox
@@ -157,7 +165,7 @@ function OnTextEditorCompile() {
         return;
     }
 
-    genBackends(code);
+    genBackends(code, code);
 
     const backendCode = getBackendCode(g_CodeType);
     if (backendCode !== undefined) {
@@ -173,7 +181,7 @@ function OnTextEditorChanged(value) {
     g_TextEditorContent = "";
     g_TextEditorContent = value;
 
-    genBackends(value);
+    genBackends(value, code);
     genWebGlCode(value, "sandboxInput.hlsl");
 }
 

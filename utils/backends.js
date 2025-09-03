@@ -106,6 +106,10 @@ class BackendPassthrough extends IBackend {
 class BackendGLSL extends IBackend {
     constructor() {
         super();
+        
+        // We have preprocesssed .glsl files already 
+        this.typeMap = {};
+    /*
         this.typeMap = {
             "float2x2": "mat2",
             "float3x3": "mat3",
@@ -124,6 +128,7 @@ class BackendGLSL extends IBackend {
             "lerp": "mix",
             "rsqrt": "inversesqrt"
         };
+        */
     }
 
     genCode(txt, fileName) {
@@ -151,7 +156,9 @@ class BackendWebGL extends BackendGLSL {
 // available backends to be usable by s2h.getBackend()
 const gBackends = {
     'hlsl': new BackendPassthrough(),
-    'glsl': new BackendGLSL(),
+    // We have preprocesssed .glsl files already 
+//    'glsl': new BackendGLSL(),
+    'glsl': new BackendPassthrough(),
     'glm': new BackendGLM(),
     'webgl': new BackendWebGL(),
     'glm-js': new BackendGLMJS(),

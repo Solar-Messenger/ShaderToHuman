@@ -322,7 +322,7 @@
                 // create Text editor UI, the data is stored in g_TextEditorContent
                 genTextEditor();
                 // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
-                genBackends(g_TextEditorContent);
+                genBackends(g_TextEditorContent, g_TextEditorContent);
                 genCanvas("2D", 0);
             }
 

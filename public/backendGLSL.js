@@ -12,7 +12,9 @@ BackendGLSL.prototype.translateName = function(name)
 //        if (type == "quat") return "float4";
 //        return type;
 //    }
-  
+
+    // We have preprocesssed .glsl files already 
+  /*
     // types
     if (name === "float2x2") return "mat2";
     if (name === "float3x3") return "mat3";
@@ -30,4 +32,5 @@ BackendGLSL.prototype.translateName = function(name)
     if (name === "frac") return "fract";
     if (name === "lerp") return "mix";
     if (name === "rsqrt") return "inversesqrt";
+    */
 };
