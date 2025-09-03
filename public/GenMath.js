@@ -332,7 +332,7 @@ function genBackends(hlslCode, fileName) {
 // @param filename e.g. "public/docs/intro_0.hlsl"
 function getPrettyCodeFile(hlslFileName) {
 
-    console.assert(!hlslFileName.endsWith(".hlsl"), "fileName needs to have .hlsl extension");
+    console.assert(hlslFileName.endsWith(".hlsl"), "fileName needs to have .hlsl extension");
 
     let hlslCode = readCodeFile(hlslFileName);
     
@@ -342,7 +342,8 @@ function getPrettyCodeFile(hlslFileName) {
 
     let glslCode = readCodeFile(glslFileName);
 
-    genBackends(hlslCode, hlslFileName);
+//    genBackends(hlslCode, hlslFileName);
+    genBackends(glslCode, hlslFileName);
 }
 
 // Sandbox

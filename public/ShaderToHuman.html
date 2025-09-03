@@ -137,7 +137,7 @@
                 logText("");
                 logText("Look at the top of the include files to copy a few lines to setup the library. Here is a simplex example:");
 
-                getPrettyCodeFile("public/docs/intro_0.glsl");
+                getPrettyCodeFile("public/docs/intro_0.hlsl");
                 genCanvas("3D", 0, 480, 100);
             }
             
@@ -202,7 +202,7 @@
                         logText("todo CS(uint2 DTid : SV_DispatchThreadID), PS(SV_Position), FS(OpenGL)");
                     }
 
-                    let fileName = "public/docs/gather_docs_" + subIndex + ".glsl";
+                    let fileName = "public/docs/gather_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                     genCanvas("3D", 0, 480, 100);
@@ -233,7 +233,7 @@
                 let subIndex = computeIndexInString(get("Scatter"), subElements);
                 if(subIndex >= 0)
                 {
-                    let fileName = "public/docs/Scatter_docs_" + subIndex + ".glsl";
+                    let fileName = "public/docs/Scatter_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                 }
@@ -253,7 +253,7 @@
                 let subIndex = computeIndexInString(get("2D"), subElements);
                 if(subIndex >= 0)
                 {
-                    let fileName = "public/docs/2D_docs_" + subIndex + ".glsl";
+                    let fileName = "public/docs/2D_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                     genCanvas("3D", 0, 480, 100);
@@ -285,7 +285,7 @@
 
                 if(subIndex >= 0)
                 {
-                    let fileName = "public/docs/3D_docs_" + subIndex + ".glsl";
+                    let fileName = "public/docs/3D_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                     genCanvas("3D", 0);
@@ -300,7 +300,7 @@
                 let subIndex = computeIndexInString(get("UI"), subElements);
                 if(subIndex >= 0)
                 {
-                    let fileName = "public/docs/UI_docs_" + subIndex + ".glsl";
+                    let fileName = "public/docs/UI_docs_" + subIndex + ".hlsl";
                     // setup so the next call to getBackendCode("GLSL") by genCanvas() creates the right code
                     getPrettyCodeFile(fileName);
                     genCanvas("2D", 0, 480, 100);

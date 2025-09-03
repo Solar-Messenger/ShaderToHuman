@@ -217,6 +217,7 @@ class BackendWebGL extends BackendGLSL {
     }
 }
 
+// available backends to be usable by s2h.getBackend()
 const gBackends = {
     'hlsl': new BackendPassthrough(),
     'glsl': new BackendGLSL(),
@@ -226,11 +227,12 @@ const gBackends = {
     'none': new IBackend()
 };
 
+// stores a dictionary of backends for different code types
 const s2h = {
-    getBackend: (backend) => {
-        backend = backend.toLowerCase();
-        if (backend in gBackends) {
-            return gBackends[backend];
+    getBackend: (codeType) => {
+        codeType = codeType.toLowerCase();
+        if (codeType in gBackends) {
+            return gBackends[codeType];
         }
 
         const nonBackend = 'none';
