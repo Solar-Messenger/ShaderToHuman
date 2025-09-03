@@ -1,0 +1,14 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "ProjMtx_textureName": "FrameBuffer"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 3,
+        "resourceViewResourceIndex": 3,
+        "cameraAltitudeAzimuth": [
+            0.014472300186753273,
+            5.943691253662109
+        ]
+    }
+}

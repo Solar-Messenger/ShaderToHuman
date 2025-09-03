@@ -1,0 +1,1726 @@
+{
+    "$schema": "gigischema.json",
+    "name": "ShaderToHuman Examples",
+    "comment": "S2H : Shader To Human\nprintf + more\n\nGather: A thread per pixel computes a color\nScatter: One  thread write to memory\n2D: Vector graphics primitives\n3D: Ray tracing primitives",
+    "version": "1.0",
+    "variables": [
+        {
+            "name": "iFrameBufferSize",
+            "type": "Float2",
+            "dflt": "800,600",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraPos",
+            "type": "Float3",
+            "dflt": "0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "ViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvViewMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "MouseState",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "MouseStateLastFrame",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iTime",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iTimeDelta",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iFrameRate",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iFrame",
+            "type": "Int",
+            "dflt": "0",
+            "visibility": "Host"
+        },
+        {
+            "name": "iMouse",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "ViewMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "ProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "JitteredProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvJitteredProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "JitteredViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvJitteredViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraAltitudeAzimuth",
+            "type": "Float2",
+            "dflt": "0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraChanged",
+            "type": "Bool",
+            "dflt": "false",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraJitter",
+            "type": "Float2",
+            "dflt": "0.5f, 0.5f",
+            "visibility": "Host"
+        },
+        {
+            "name": "WindowSize",
+            "type": "Float2",
+            "dflt": "1.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "rayStart",
+            "type": "Float",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "100"
+            }
+        },
+        {
+            "name": "rayEnd",
+            "type": "Float",
+            "dflt": "10000",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "100"
+            }
+        },
+        {
+            "name": "SplatOffset",
+            "type": "Float3",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "-5",
+                "max": "5"
+            }
+        },
+        {
+            "name": "frameRandom",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Drag"
+            }
+        },
+        {
+            "name": "iResolution",
+            "type": "Float3",
+            "dflt": "0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraNearPlane",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraFarPlane",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "GatherTest",
+            "fileName": "Gather_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "ScatterTest",
+            "fileName": "Scatter_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "3D_example",
+            "fileName": "3D_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "2D_example",
+            "fileName": "2D_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "2DArrow",
+            "fileName": "2D_Arrow.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "DebugZoomTest",
+            "fileName": "DebugZoom_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "SplatTestPS",
+            "fileName": "SplatVSPS_example.hlsl",
+            "type": "Pixel",
+            "entryPoint": "mainPS"
+        },
+        {
+            "name": "ClearTest",
+            "fileName": "Clear_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "4To1Test",
+            "fileName": "4To1_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Input0",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "Input1",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "Input2",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "Input3",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ],
+            "samplers": [
+                {
+                    "name": "Bilinear",
+                    "addressMode": "Clamp"
+                }
+            ]
+        },
+        {
+            "name": "SplatTestCS",
+            "fileName": "SplatCS_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "SplatTestVS",
+            "fileName": "SplatVSPS_example.hlsl",
+            "type": "Vertex",
+            "entryPoint": "mainVS"
+        },
+        {
+            "name": "SplatTestBase",
+            "fileName": "SplatCS_example.hlsl",
+            "entryPoint": "baseCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "TableTest",
+            "fileName": "Table_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "QuadVS",
+            "fileName": "QuadVSPS_example.hlsl",
+            "type": "Vertex",
+            "entryPoint": "mainVS"
+        },
+        {
+            "name": "QuadPS",
+            "fileName": "QuadVSPS_example.hlsl",
+            "type": "Pixel",
+            "entryPoint": "mainPS"
+        },
+        {
+            "name": "QuadPost",
+            "fileName": "QuadPost_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "GenUserFont",
+            "fileName": "GenUserFont_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "UseUserFont",
+            "fileName": "UseUserFont_example.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UserFontTexture",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ],
+            "samplers": [
+                {
+                    "name": "g_Sampler"
+                }
+            ]
+        }
+    ],
+    "structs": [
+        {
+            "name": "UIState",
+            "fields": [
+                {
+                    "name": "UIRadioState",
+                    "type": "Uint",
+                    "dflt": "0"
+                },
+                {
+                    "name": "UICheckboxState",
+                    "type": "Uint",
+                    "dflt": "0"
+                },
+                {
+                    "name": "colorSlider0",
+                    "type": "Float4",
+                    "dflt": "0,0.3,1.0,1.0"
+                },
+                {
+                    "name": "colorSlider1",
+                    "type": "Float4",
+                    "dflt": "0,0.3,1.0,1.0"
+                },
+                {
+                    "name": "sizeSliders",
+                    "type": "Float4",
+                    "dflt": "3,4,5,6"
+                },
+                {
+                    "name": "s2h_State",
+                    "type": "Int4",
+                    "dflt": "0,0,0,0"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "../include/s2h.hlsl",
+            "type": "Shader"
+        },
+        {
+            "fileName": "../include/s2h_scatter.hlsl",
+            "type": "Shader"
+        },
+        {
+            "fileName": "../include/s2h_3d.hlsl",
+            "type": "Shader"
+        },
+        {
+            "fileName": "SplatCommon.hlsl",
+            "type": "Shader"
+        },
+        {
+            "fileName": "QuadCommon.hlsl",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "resourceTexture": {
+                "name": "A",
+                "editorPos": [
+                    139.0,
+                    -110.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "3DExample",
+                "editorPos": [
+                    469.0,
+                    -110.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "A",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "3D_example"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "ScatterTest",
+                "editorPos": [
+                    507.0,
+                    159.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Clear",
+                        "dstPin": "Output"
+                    }
+                ],
+                "shader": {
+                    "name": "ScatterTest"
+                },
+                "dispatchSize": {
+                    "indirectBuffer": {
+                        "node": "C0"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "2DExample",
+                "editorPos": [
+                    341.0,
+                    703.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "F",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "2D_example"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "GatherTest",
+                "editorPos": [
+                    469.0,
+                    -17.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "B",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "GatherTest"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "C0"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "DebugZoomTest",
+                "editorPos": [
+                    1301.0,
+                    47.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "4to1Test",
+                        "dstPin": "Output"
+                    }
+                ],
+                "shader": {
+                    "name": "DebugZoomTest"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "C0"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "SplatTestCS0",
+                "editorPos": [
+                    485.0,
+                    79.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "SplatTestBase0",
+                        "dstPin": "Output"
+                    }
+                ],
+                "shader": {
+                    "name": "SplatTestCS"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "C1"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "TESTID",
+                        "value": "0"
+                    }
+                ]
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "4to1Test",
+                "editorPos": [
+                    1115.0,
+                    -26.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Input0",
+                        "dstNode": "3DExample",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "Input1",
+                        "dstNode": "GatherTest",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "Input2",
+                        "dstNode": "SplatTestCS0",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "Input3",
+                        "dstNode": "2DExample",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "FrameBuffer",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "4To1Test"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "C0"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "FrameBuffer",
+                "editorPos": [
+                    971.0,
+                    258.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "B",
+                "editorPos": [
+                    139.0,
+                    -14.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "C0",
+                "editorPos": [
+                    139.0,
+                    82.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "D",
+                "editorPos": [
+                    139.0,
+                    162.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Clear",
+                "editorPos": [
+                    341.0,
+                    162.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "D",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "ClearTest"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "FrameBuffer"
+                    },
+                    "indirectBuffer": {
+                        "node": "C1"
+                    }
+                }
+            }
+        },
+        {
+            "actionDrawCall": {
+                "name": "SplatTestVSPS",
+                "editorPos": [
+                    485.0,
+                    316.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "vertexShader": {
+                    "name": "SplatTestVS"
+                },
+                "pixelShader": {
+                    "name": "SplatTestPS"
+                },
+                "countPerInstance": 6,
+                "colorTargetSettings": [
+                    {
+                        "enableBlending": true,
+                        "destBlend": "InvSrcAlpha",
+                        "destBlendAlpha": "InvSrcAlpha"
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "shadingRateImage": {
+                    "node": "C1"
+                },
+                "vertexBuffer": {
+                    "node": "C1"
+                },
+                "indexBuffer": {
+                    "node": "C1"
+                },
+                "instanceBuffer": {
+                    "node": "C1"
+                },
+                "colorTargets": [
+                    {
+                        "node": "SplatTestBase2",
+                        "pin": "Output"
+                    },
+                    {
+                        "node": "C1"
+                    },
+                    {
+                        "node": "GatherTest"
+                    },
+                    {
+                        "node": "F"
+                    },
+                    {
+                        "node": "G"
+                    },
+                    {
+                        "node": "QuadPost"
+                    },
+                    {},
+                    {}
+                ],
+                "depthTarget": {
+                    "node": "C1"
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "C2",
+                "editorPos": [
+                    155.0,
+                    386.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "SplatTestBase0",
+                "editorPos": [
+                    293.0,
+                    82.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "C0",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "SplatTestBase"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "C1"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "TESTID",
+                        "value": "0"
+                    }
+                ]
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "SplatTestBase2",
+                "editorPos": [
+                    283.0,
+                    383.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "C2",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "SplatTestBase"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "C1"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "TESTID",
+                        "value": "2"
+                    }
+                ]
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "C1",
+                "editorPos": [
+                    155.0,
+                    242.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "SplatTestBase1",
+                "editorPos": [
+                    293.0,
+                    239.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "C1",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "SplatTestBase"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "C1"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "TESTID",
+                        "value": "1"
+                    }
+                ]
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "SplatTestCS1",
+                "editorPos": [
+                    501.0,
+                    242.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "SplatTestBase1",
+                        "dstPin": "Output"
+                    }
+                ],
+                "shader": {
+                    "name": "SplatTestCS"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "C1"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "TESTID",
+                        "value": "1"
+                    }
+                ]
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "C3",
+                "editorPos": [
+                    155.0,
+                    498.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "SplatTestBase3",
+                "editorPos": [
+                    283.0,
+                    495.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "C3",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "SplatTestBase"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "GatherTest"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "TESTID",
+                        "value": "3"
+                    }
+                ]
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "SplatTestCS3",
+                "editorPos": [
+                    507.0,
+                    591.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "SplatTestBase3",
+                        "dstPin": "Output"
+                    }
+                ],
+                "shader": {
+                    "name": "SplatTestCS"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "GatherTest"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "TESTID",
+                        "value": "3"
+                    }
+                ]
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "UIState",
+                "editorPos": [
+                    123.0,
+                    -206.0
+                ],
+                "transient": false,
+                "format": {
+                    "structureType": {
+                        "name": "UIState"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "E",
+                "editorPos": [
+                    155.0,
+                    610.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "TableTest",
+                "editorPos": [
+                    341.0,
+                    604.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "E",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "TableTest"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "GatherTest"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "F",
+                "editorPos": [
+                    155.0,
+                    706.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "G",
+                "editorPos": [
+                    -5.0,
+                    962.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionDrawCall": {
+                "name": "DrawQuad",
+                "editorPos": [
+                    434.0,
+                    930.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "vertexShader": {
+                    "name": "QuadVS"
+                },
+                "pixelShader": {
+                    "name": "QuadPS"
+                },
+                "countPerInstance": 6,
+                "shadingRateImage": {
+                    "node": "QuadPost"
+                },
+                "vertexBuffer": {
+                    "node": "QuadPost"
+                },
+                "indexBuffer": {
+                    "node": "QuadPost"
+                },
+                "instanceBuffer": {
+                    "node": "QuadPost"
+                },
+                "colorTargets": [
+                    {
+                        "node": "Clear (1)",
+                        "pin": "Output"
+                    },
+                    {
+                        "node": "QuadPost"
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "depthTarget": {
+                    "node": "QuadPost"
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "QuadPost",
+                "editorPos": [
+                    693.0,
+                    991.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "DrawQuad",
+                        "dstPin": "colorTarget0"
+                    }
+                ],
+                "shader": {
+                    "name": "QuadPost"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    },
+                    "indirectBuffer": {
+                        "node": "QuadPost"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Clear (1)",
+                "editorPos": [
+                    165.0,
+                    975.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "G",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "ClearTest"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "FrameBuffer"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "H",
+                "editorPos": [
+                    123.0,
+                    818.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "2DArrow",
+                "editorPos": [
+                    325.0,
+                    815.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "H",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "2DArrow"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "UserFontTexture",
+                "editorPos": [
+                    37.0,
+                    1170.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "multiply": [
+                        768,
+                        8,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "GenUserFont",
+                "editorPos": [
+                    245.0,
+                    1215.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "UserFontTexture",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "GenUserFont"
+                },
+                "dispatchSize": {
+                    "multiply": [
+                        768,
+                        8,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "UseUserFont",
+                "editorPos": [
+                    605.0,
+                    1186.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "H ",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UserFontTexture",
+                        "dstNode": "GenUserFont",
+                        "dstPin": "Output"
+                    }
+                ],
+                "shader": {
+                    "name": "UseUserFont"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "H ",
+                "editorPos": [
+                    283.0,
+                    1138.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        }
+    ],
+    "settings": {
+        "common": {
+            "createPDBsAndBinaries": true
+        }
+    }
+}

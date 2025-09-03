@@ -1,0 +1,13 @@
+{
+    "version": "2.0",
+    "snapshot": {
+        "resourceViewNodeIndex": 11,
+        "resourceViewResourceIndex": 3,
+        "savedVariables": [
+            {
+                "name": "iFrameBufferSize",
+                "value": "480.000000,360.000000"
+            }
+        ]
+    }
+}

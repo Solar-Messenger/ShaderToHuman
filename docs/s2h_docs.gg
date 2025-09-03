@@ -1,0 +1,781 @@
+{
+    "$schema": "gigischema.json",
+    "name": "ShaderToHuman Docs",
+    "comment": "Shader To Human (S2H)",
+    "version": "1.0",
+    "variables": [
+        {
+            "name": "iFrameBufferSize",
+            "type": "Float2",
+            "dflt": "480,360",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraPos",
+            "type": "Float3",
+            "dflt": "0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "ViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvViewMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "MouseState",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "MouseStateLastFrame",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iTime",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iTimeDelta",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iFrameRate",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iFrame",
+            "type": "Int",
+            "dflt": "0",
+            "visibility": "Host"
+        },
+        {
+            "name": "iMouse",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "ViewMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "ProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "JitteredProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvJitteredProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "JitteredViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvJitteredViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraAltitudeAzimuth",
+            "type": "Float2",
+            "dflt": "0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraChanged",
+            "type": "Bool",
+            "dflt": "false",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraJitter",
+            "type": "Float2",
+            "dflt": "0.5f, 0.5f",
+            "visibility": "Host"
+        },
+        {
+            "name": "WindowSize",
+            "type": "Float2",
+            "dflt": "1.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "rayStart",
+            "type": "Float",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "100"
+            }
+        },
+        {
+            "name": "rayEnd",
+            "type": "Float",
+            "dflt": "10000",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "100"
+            }
+        },
+        {
+            "name": "SplatOffset",
+            "type": "Float3",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "-5",
+                "max": "5"
+            }
+        },
+        {
+            "name": "frameRandom",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Drag"
+            }
+        },
+        {
+            "name": "iResolution",
+            "type": "Float3",
+            "dflt": "0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraNearPlane",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraFarPlane",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "2D",
+            "fileName": "2D_docs.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "3D",
+            "fileName": "3D_docs.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Gather",
+            "fileName": "Gather_docs.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Intro",
+            "fileName": "Intro.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "fileName": "UI_docs.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Scatter",
+            "fileName": "Scatter_docs.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "UIState",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "UIState"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        }
+    ],
+    "structs": [
+        {
+            "name": "UIState",
+            "fields": [
+                {
+                    "name": "UIRadioState",
+                    "type": "Uint",
+                    "dflt": "0"
+                },
+                {
+                    "name": "UICheckboxState",
+                    "type": "Uint",
+                    "dflt": "0"
+                },
+                {
+                    "name": "colorSlider0",
+                    "type": "Float4",
+                    "dflt": "0,0.3,1.0,1.0"
+                },
+                {
+                    "name": "colorSlider1",
+                    "type": "Float4",
+                    "dflt": "0,0.3,1.0,1.0"
+                },
+                {
+                    "name": "sizeSliders",
+                    "type": "Float4",
+                    "dflt": "3,4,5,6"
+                },
+                {
+                    "name": "s2h_State",
+                    "type": "Int4",
+                    "dflt": "0,0,0,0"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "../include/s2h.hlsl",
+            "type": "Shader"
+        },
+        {
+            "fileName": "../include/s2h_scatter.hlsl",
+            "type": "Shader"
+        },
+        {
+            "fileName": "../include/s2h_3d.hlsl",
+            "type": "Shader"
+        },
+        {
+            "fileName": "common.hlsl",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "resourceTexture": {
+                "name": "A",
+                "editorPos": [
+                    139.0,
+                    -110.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "3D",
+                "editorPos": [
+                    459.0,
+                    -110.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "A",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "3D"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "GIGI",
+                        "value": "1"
+                    }
+                ]
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "2D",
+                "editorPos": [
+                    459.0,
+                    -17.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "B",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "2D"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "GIGI",
+                        "value": "1"
+                    }
+                ]
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "B",
+                "editorPos": [
+                    139.0,
+                    -14.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "UIState",
+                "editorPos": [
+                    123.0,
+                    -206.0
+                ],
+                "transient": false,
+                "format": {
+                    "structureType": {
+                        "name": "UIState"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Gather",
+                "editorPos": [
+                    469.0,
+                    108.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "C",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "Gather"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "GIGI",
+                        "value": "1"
+                    }
+                ]
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Intro",
+                "editorPos": [
+                    485.0,
+                    370.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "E",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "Intro"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "GIGI",
+                        "value": "1"
+                    }
+                ]
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "UI",
+                "editorPos": [
+                    501.0,
+                    479.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "F",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "UI"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "GIGI",
+                        "value": "1"
+                    }
+                ]
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "C",
+                "editorPos": [
+                    139.0,
+                    98.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "D",
+                "editorPos": [
+                    123.0,
+                    226.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "E",
+                "editorPos": [
+                    139.0,
+                    338.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Scatter",
+                "editorPos": [
+                    475.0,
+                    220.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "D",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "UIState",
+                        "dstNode": "UIState",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "Scatter"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                },
+                "defines": [
+                    {
+                        "name": "GIGI",
+                        "value": "1"
+                    }
+                ]
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "F",
+                "editorPos": [
+                    155.0,
+                    402.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        }
+    ],
+    "settings": {
+        "common": {
+            "createPDBsAndBinaries": true
+        }
+    }
+}

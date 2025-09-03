@@ -1,0 +1,17 @@
+{
+	"name": "ShaderToHuman",
+	"version": "0.31.0",
+	"description": "HLSL/GLSL library for debugging shaders",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node server.js"
+	},
+	"author": "Martin Mittring",
+	"license": "ISC",
+	"dependencies": {
+		"adm-zip": "^0.5.16",
+		"c-preprocessor": "^0.2.13",
+		"express": "^5.1.0"
+	}
+}

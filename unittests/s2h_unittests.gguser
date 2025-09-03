@@ -1,0 +1,10 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "ProjMtx_textureName": "A"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 1,
+        "resourceViewResourceIndex": 2
+    }
+}

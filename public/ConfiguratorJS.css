@@ -1,0 +1,330 @@
+body {
+    background-color: #dddddd;
+    font-family: Tahoma, sans-serif;
+    font-size: 15px;
+}
+
+h1 {
+    font: 50px 'Allan';
+    margin: 15px;
+}
+
+h2 {
+    font: 30px 'Allan';
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+h1.mainHeader {
+    /* min 32px font size, 8% of viewport width, max 7px font size */
+    font: clamp(32px, 8vw, 70px) 'Allan';
+    letter-spacing: 2px;
+    margin: 0px;
+}
+
+p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.Info {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    margin: 18px;
+    line-height: 1.5;
+    background-color: #f8f8f8;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ffffff;
+    padding: 7px;
+}
+
+.Error {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    margin: 8px;
+    line-height: 1.5;
+    background-color: #ffdddd;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #ff6666;
+    padding: 7px;
+}
+
+/* non proportional = fixed-width font in a grey box */
+.txtFile {
+    margin: 2px;
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 12px;
+    white-space: pre-wrap;
+    line-height: 1.1;
+    background-color: #dddddd;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #888888;
+    padding: 4px;
+}
+
+
+.readOnlyTextBox {
+    color: lightgreen;
+    border-radius: 6px;
+    font-family: "Lucida Console", "Courier New", monospace;
+    display: block;
+    border: 2px solid #fff;
+    background-color: #565;
+    padding: 13px;
+    box-shadow: inset 4px 4px 3px #000;
+    line-height: 1.5;
+    font-size: 12px;
+    margin: 0px;
+}
+
+.fldset-class {
+}
+
+/* Text in front of Combo box */
+a.option {
+    padding: 0px;
+}
+
+/* Combo box */
+select {
+    padding: 1px;
+    background-color: #f2ccac;
+    border-radius: 8px;
+    font-family: Tahoma, sans-serif;
+    font-size: 15px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.11),0 2px 2px rgba(0,0,0,0.11),0 4px 4px rgba(0,0,0,0.11),0 6px 8px rgba(0,0,0,0.11),0 8px 16px rgba(0,0,0,0.11)
+}
+
+canvas.bright {
+    border: 1px solid rgba(0, 0, 0, .32);
+    outline: 10px solid white;
+    background-color: rgba(241,241,241,255);
+    box-shadow: 0 12px 30px 0 rgba(0, 0, 0, .92), 0 3px 7px 0 rgba(0, 0, 0, .38);
+    margin: 15px;
+}
+
+canvas.dark {
+    border: 1px solid rgba(0, 0, 0, .32);
+    outline: 10px solid white;
+    background-color: rgba(30,30,30,255);
+    box-shadow: 0 12px 30px 0 rgba(0, 0, 0, .92), 0 3px 7px 0 rgba(0, 0, 0, .38);
+    margin: 15px;
+}
+
+button {
+    font-family: Tahoma, sans-serif;
+    font-size: 15px;
+}
+
+.config {
+    background-color: #f2ccac;
+    border-radius: 8px;
+    padding: 4px 6px;
+    border: 1px solid #444;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.11),0 2px 2px rgba(0,0,0,0.11),0 4px 4px rgba(0,0,0,0.11),0 6px 8px rgba(0,0,0,0.11),0 8px 16px rgba(0,0,0,0.11)
+}
+
+.activeConfig {
+    background-color: #f2ccac;
+    border-radius: 8px;
+    padding: 2px 6px;
+    border: 3px solid #444;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.11),0 2px 2px rgba(0,0,0,0.11),0 4px 4px rgba(0,0,0,0.11),0 6px 8px rgba(0,0,0,0.11),0 8px 16px rgba(0,0,0,0.11)
+}
+
+textarea {
+    resize: none;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+/* One way to make tabs in HTML and CSS */
+
+input[type="radio"] + label {
+    display: inline-block;
+    user-select: none;
+}
+
+input[type="radio"] ~ .tab {
+    display: none
+}
+
+#tab1:checked ~ .tab.content1,
+#tab2:checked ~ .tab.content2,
+#tab3:checked ~ .tab.content3,
+#tab4:checked ~ .tab.content4,
+#tab5:checked ~ .tab.content5 {
+    display: block;
+}
+
+/* not highlighted tab name */
+input[type="radio"] + label {
+    border: 2px solid #999;
+    border-bottom-width: 0px;
+    background: #ccc;
+    padding: 4px 12px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    top: 1px;
+}
+/* highlighted tab name */
+input[type="radio"]:checked + label {
+    background: #FFF;
+    border-bottom: 1px solid transparent;
+}
+input[type="radio"].tabBig + label {
+    display: none;
+}
+
+input[type="radio"].tabChoice + label {
+    border: 1px solid #aaa;
+    border-bottom-width: 0px;
+    background: #ddd;
+    padding: 0px 6px 0px 6px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    top: 1px;
+    box-shadow: 0px -2px 3px rgba(0,0,0,0.21)inset;
+}
+input[type="radio"].tabChoice:checked + label {
+    background: #fff;
+    padding: 0px 6px 0px 6px;
+    border-bottom: 1px solid transparent;
+    box-shadow: 0 -3px 5px rgba(0,0,0,0.21)
+}
+
+/* tab content */
+input[type="radio"] ~ .tab {
+    border: 2px solid #999;
+    padding: 12px;
+    background-color: #eeeeee;
+    max-width: 1100px;
+}
+
+/* code */
+pre {
+    border: 2px solid #999;
+    padding: 12px;
+    color: #c0c5ce;
+    background: #1c1d21;
+    font-family: monospace;
+    line-height: normal;
+    max-width: 800px;
+}
+
+/* hide all code class="ConfiguratorState" sections */
+code.ConfiguratorState {
+    display: none
+}
+
+/* hide gears icon if viewport is too small */
+@media (max-width: 600px) {
+    .gearsImage {
+        display: none;
+    }
+}
+
+/* logTag() / tab()  */
+input + label {
+    border: 2px solid #999;
+    border-bottom-width: 0px;
+    background: #ccc;
+    padding: 0px 4px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    top: 1px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;  
+    background: #bbbbbb;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5); /* Inset shadow */
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    background: #f2ccac;
+    border: 1px solid #666; /* Border around the thumb */
+    cursor: pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #04AA6D;
+    cursor: pointer;
+  }
+  
+  /* For Code Copy Button */
+  pre:has(code) {
+    position: relative;
+    overflow: auto;
+  
+    /* make space  */
+    margin: 5px 0;
+    padding: 1.75rem 0 1.75rem 1rem;
+    border-radius: 10px;
+  }
+  pre:has(code) button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  
+    font-size: 0.9rem;
+    padding: 0.15rem;
+    background-color: #828282;
+  
+    border: ridge 1px #7b7b7c;
+    border-radius: 5px;
+    text-shadow: #c4c4c4 0 0 2px;
+  }
+  
+  pre:has(code) button:hover {
+    cursor: pointer;
+    background-color: #bcbabb;
+  }
+
+  .file-list {
+    background: rgb(222, 234, 234);
+    position: relative;
+    float: right;
+    width:30%;
+    overflow: auto;
+    height: 400px;
+    border: ridge 1px #7b7b7c;
+  }
+
+  .file-list ul li {
+    cursor: pointer;
+    display: block;
+}
+
+.file-list ul li:hover {
+    background: rgb(200, 220, 220); /* Lighter or darker than the parent background */
+}
+
+
+.flex-container {
+  display: flex;
+  gap: 10px; /* Optional spacing between sections */
+  flex-direction: row;
+}
+
+.left-section,
+.right-section {
+  flex: 1;
+}

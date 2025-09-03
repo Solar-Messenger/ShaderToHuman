@@ -1,0 +1,10 @@
+pages:
+  image: docker.artifactory.ea.com/alpine:latest
+  stage: deploy
+  script:
+  - echo 'Nothing to do...'
+  artifacts:
+    paths:
+    - public
+  only:
+  - main
