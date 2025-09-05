@@ -1,5 +1,5 @@
 @echo off
-rem this generates public/docs and public/include
+rem this generates public/docs and public/include from docs_src
 
 rem skip downto MAIN to have functions on top 
 GOTO:MAIN
@@ -10,13 +10,13 @@ GOTO:MAIN
         set SUB_CATEGORY=%~2
         echo #define SUB_CATEGORY %SUB_CATEGORY% > input
         echo #define COPYRIGHT 0 >> input
-        echo #include "docs/common.hlsl" >> input
-        type docs\%FILE_NAME%.hlsl >> input
+        echo #include "docs_src/common.hlsl" >> input
+        type docs_src\%FILE_NAME%.hlsl >> input
         %CLPATH%\cl.exe /EP /C input > public\docs\%FILE_NAME%_%SUB_CATEGORY%.hlsl
         echo #define SUB_CATEGORY %SUB_CATEGORY% > input
         echo #include "include/s2h_glsl.hlsl" >> input
-        echo #include "docs/common.hlsl" >> input
-        type docs\%FILE_NAME%.hlsl >> input
+        echo #include "docs_src/common.hlsl" >> input
+        type docs_src\%FILE_NAME%.hlsl >> input
         %CLPATH%\cl.exe /EP /C input > public\docs\%FILE_NAME%_%SUB_CATEGORY%.glsl
     ENDLOCAL
 EXIT /B 0
