@@ -39,7 +39,7 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         int4 dstI = dstF * 255.0f;
 
         s2h_setScale(ui, 3);
-        s2h_printTxt(ui, 'Z', 'o', 'o', 'm');
+        s2h_printTxt(ui, 'P', 'i', 'x', 'e', 'l');
         s2h_printLF(ui);
         s2h_setScale(ui, 2);
         s2h_printLF(ui);
