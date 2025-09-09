@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const utils = require('./utils/utils') // utils.js
+const utils = require('./docs/utils') // utils.js
 
 const port = 3000;
 const hostname = '127.0.0.1';
