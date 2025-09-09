@@ -400,53 +400,6 @@
             ]
         },
         {
-            "name": "SplatTestCS",
-            "fileName": "SplatCS_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "SplatTestVS",
-            "fileName": "SplatVSPS_example.hlsl",
-            "type": "Vertex",
-            "entryPoint": "mainVS"
-        },
-        {
-            "name": "SplatTestBase",
-            "fileName": "SplatCS_example.hlsl",
-            "entryPoint": "baseCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "UIState",
-                    "access": "UAV",
-                    "type": "Buffer",
-                    "buffer": {
-                        "typeStruct": {
-                            "name": "UIState"
-                        },
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
             "name": "TableTest",
             "fileName": "Table_example.hlsl",
             "entryPoint": "mainCS",

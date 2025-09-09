@@ -1,0 +1,19 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "ProjMtx_textureName": "C0"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 5,
+        "resourceViewResourceIndex": 2,
+        "cameraPos": [
+            2.3071093559265138,
+            37.85918426513672,
+            -4.883224964141846
+        ],
+        "cameraAltitudeAzimuth": [
+            -1.4839509725570679,
+            6.277975082397461
+        ]
+    }
+}

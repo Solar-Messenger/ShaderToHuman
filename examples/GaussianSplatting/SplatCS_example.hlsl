@@ -3,9 +3,9 @@
 //    Copyright (c) 2024 Electronic Arts Inc.  All rights reserved.    //
 /////////////////////////////////////////////////////////////////////////
 
-#include "../include/s2h.hlsl"
-#include "../include/s2h_scatter.hlsl"
-#include "../include/s2h_3d.hlsl"
+#include "../../include/s2h.hlsl"
+#include "../../include/s2h_scatter.hlsl"
+#include "../../include/s2h_3d.hlsl"
 #include "SplatCommon.hlsl"
 
 // 1: low quality

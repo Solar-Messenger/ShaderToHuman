@@ -203,201 +203,10 @@
     ],
     "shaders": [
         {
-            "name": "GatherTest",
-            "fileName": "Gather_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "UIState",
-                    "access": "UAV",
-                    "type": "Buffer",
-                    "buffer": {
-                        "typeStruct": {
-                            "name": "UIState"
-                        },
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "ScatterTest",
-            "fileName": "Scatter_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "3D_example",
-            "fileName": "3D_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "2D_example",
-            "fileName": "2D_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "UIState",
-                    "access": "UAV",
-                    "type": "Buffer",
-                    "buffer": {
-                        "typeStruct": {
-                            "name": "UIState"
-                        },
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "2DArrow",
-            "fileName": "2D_Arrow.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "UIState",
-                    "access": "UAV",
-                    "type": "Buffer",
-                    "buffer": {
-                        "typeStruct": {
-                            "name": "UIState"
-                        },
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "DebugZoomTest",
-            "fileName": "DebugZoom_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
             "name": "SplatTestPS",
             "fileName": "SplatVSPS_example.hlsl",
             "type": "Pixel",
             "entryPoint": "mainPS"
-        },
-        {
-            "name": "ClearTest",
-            "fileName": "Clear_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "4To1Test",
-            "fileName": "4To1_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Input0",
-                    "access": "SRV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "Input1",
-                    "access": "SRV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "Input2",
-                    "access": "SRV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "Input3",
-                    "access": "SRV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ],
-            "samplers": [
-                {
-                    "name": "Bilinear",
-                    "addressMode": "Clamp"
-                }
-            ]
         },
         {
             "name": "SplatTestCS",
@@ -445,102 +254,6 @@
                     }
                 }
             ]
-        },
-        {
-            "name": "TableTest",
-            "fileName": "Table_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "UIState",
-                    "access": "UAV",
-                    "type": "Buffer",
-                    "buffer": {
-                        "typeStruct": {
-                            "name": "UIState"
-                        },
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "QuadVS",
-            "fileName": "QuadVSPS_example.hlsl",
-            "type": "Vertex",
-            "entryPoint": "mainVS"
-        },
-        {
-            "name": "QuadPS",
-            "fileName": "QuadVSPS_example.hlsl",
-            "type": "Pixel",
-            "entryPoint": "mainPS"
-        },
-        {
-            "name": "QuadPost",
-            "fileName": "QuadPost_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "GenUserFont",
-            "fileName": "GenUserFont_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "UseUserFont",
-            "fileName": "UseUserFont_example.hlsl",
-            "entryPoint": "mainCS",
-            "resources": [
-                {
-                    "name": "Output",
-                    "access": "UAV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                },
-                {
-                    "name": "UserFontTexture",
-                    "access": "SRV",
-                    "type": "Texture",
-                    "buffer": {
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ],
-            "samplers": [
-                {
-                    "name": "g_Sampler"
-                }
-            ]
         }
     ],
     "structs": [
@@ -582,23 +295,19 @@
     ],
     "fileCopies": [
         {
-            "fileName": "../include/s2h.hlsl",
+            "fileName": "../../include/s2h.hlsl",
             "type": "Shader"
         },
         {
-            "fileName": "../include/s2h_scatter.hlsl",
+            "fileName": "../../include/s2h_scatter.hlsl",
             "type": "Shader"
         },
         {
-            "fileName": "../include/s2h_3d.hlsl",
+            "fileName": "../../include/s2h_3d.hlsl",
             "type": "Shader"
         },
         {
             "fileName": "SplatCommon.hlsl",
-            "type": "Shader"
-        },
-        {
-            "fileName": "QuadCommon.hlsl",
             "type": "Shader"
         }
     ],
@@ -802,7 +511,7 @@
                 "name": "C3",
                 "editorPos": [
                     315.0,
-                    130.0
+                    34.0
                 ],
                 "format": {
                     "format": "RGBA8_Unorm_sRGB"
@@ -819,7 +528,7 @@
                 "name": "SplatTestBase3",
                 "editorPos": [
                     523.0,
-                    130.0
+                    34.0
                 ],
                 "linkProperties": [
                     {},
@@ -859,7 +568,7 @@
                 "name": "SplatTestCS3",
                 "editorPos": [
                     747.0,
-                    130.0
+                    34.0
                 ],
                 "linkProperties": [
                     {},

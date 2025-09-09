@@ -4,16 +4,11 @@
         "ProjMtx_textureName": "FrameBuffer"
     },
     "snapshot": {
-        "resourceViewNodeIndex": 2,
+        "resourceViewNodeIndex": 1,
         "resourceViewResourceIndex": 2,
-        "cameraPos": [
-            12.261970520019532,
-            9.715798377990723,
-            -18.266862869262697
-        ],
         "cameraAltitudeAzimuth": [
-            -0.20337511599063874,
-            0.016184985637664796
+            -0.3199598491191864,
+            6.116130352020264
         ]
     }
 }
