@@ -4,16 +4,25 @@
         "ProjMtx_textureName": "C0"
     },
     "snapshot": {
-        "resourceViewNodeIndex": 8,
-        "resourceViewResourceIndex": 2,
+        "resourceViewNodeIndex": 11,
+        "resourceViewResourceIndex": 4,
+        "cameraPos": [
+            1.0319608449935914,
+            1.6895979642868043,
+            -3.5318827629089357
+        ],
+        "cameraAltitudeAzimuth": [
+            -0.35203415155410769,
+            5.554901123046875
+        ],
         "savedVariables": [
             {
                 "name": "SplatOffset",
-                "value": "0.746000,-1.866000,-1.177000"
+                "value": "0.746000,0.991000,-3.339000"
             },
             {
                 "name": "frameRandom",
-                "value": "true"
+                "value": "false"
             }
         ]
     }

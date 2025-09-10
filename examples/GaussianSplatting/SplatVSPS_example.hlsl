@@ -28,12 +28,16 @@ struct VSOutput // AKA PSInput
 
 	// for xbox needs this to be last
 	float4 position : SV_POSITION;
+
+	// for randomization
+	uint splatId : TEXCOORD4;
 };
 
 struct PSOutput
 {
 	// linear color, not sRGB
 	float4 colorTarget : SV_Target0;
+	float depth :SV_DEPTH; 
 };
 
 /*
@@ -167,6 +171,7 @@ VSOutput mainVS(VSInput input)
 	params.toInterpolator(output.a, output.b, output.c);
 
 	output.uv = uv;
+	output.splatId = splatId;
 
 	return output;
 }
@@ -199,10 +204,15 @@ PSOutput mainPS(VSOutput input)
 	ret.colorTarget = linearOutput;
 
 	// Frame buffer blend is not doing this so we have to do it here
-	ret.colorTarget.rgb *= ret.colorTarget.a;
+//	ret.colorTarget.rgb *= ret.colorTarget.a;
+	ret.colorTarget.a = 1;
 
-	// hack
-//	ret.colorTarget = 1;
+    float4x4 viewToClip = transpose(/*$(Variable:ProjMtx)*/);
+	ret.depth = deviceDepthFromViewLinearDepth(-params.splatZ.x, viewToClip);
+
+    uint rndState = initRand(dot(uint3(pixPos,0), uint3(82927, 21313, 1)), input.splatId + 0x12345678 + /*$(Variable:frameRandom)*/ * /*$(Variable:iFrame)*/);
+    if(sRGBOutput.a <= nextRand(rndState))
+		clip(-1);
 
 	return ret;
 }

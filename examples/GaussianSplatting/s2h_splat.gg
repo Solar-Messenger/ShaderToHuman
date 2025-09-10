@@ -685,9 +685,9 @@
                     "name": "SplatTestPS"
                 },
                 "countPerInstance": 6,
-                "instanceCount": 2,
+                "instanceCount": 6,
                 "depthTargetClear": true,
-                "depthTargetClearValue": 1.0,
+                "depthTest": "Greater",
                 "colorTargets": [
                     {
                         "node": "ClearColor",

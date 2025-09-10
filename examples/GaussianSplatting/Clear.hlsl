@@ -29,6 +29,16 @@
 [numthreads(8, 8, 1)]
 void mainCS(uint2 DTid : SV_DispatchThreadID)
 {
+    float3 background = float3(0.1f, 0.2f, 0.3f) * 0.7f;
+    Output[DTid] = float4(s2h_accurateLinearToSRGB(background), 1.0f);
+	return;
+
+
+
+
+
+
+
     float2 dimensions = /*$(Variable:iFrameBufferSize)*/.xy;
     uint2 pxPos = DTid;
 
@@ -43,10 +53,6 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         bool checker = (gridPos.x % 2) == (gridPos.y % 2);
         color = checker ? lightColor : darkColor;
     }
-
-#ifdef COLOR
-    Output[DTid] = float4(0, 0, 0, 1.0f);
-#else
 
     Context3D context;
     float3 worldPos;
@@ -63,5 +69,4 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	color = context.dstColor.rgb;
 
     Output[DTid] = float4(color, 1.0f);
-#endif
 }
