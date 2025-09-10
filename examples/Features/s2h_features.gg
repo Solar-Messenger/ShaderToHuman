@@ -768,6 +768,7 @@
                         "dstPin": "resource"
                     }
                 ],
+                "hideInViewer": true,
                 "shader": {
                     "name": "ClearTest"
                 },
@@ -986,6 +987,7 @@
                         "dstPin": "resource"
                     }
                 ],
+                "hideInViewer": true,
                 "shader": {
                     "name": "ClearTest"
                 },

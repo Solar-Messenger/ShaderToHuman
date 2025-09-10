@@ -296,19 +296,28 @@ float3x3 matrixFromQuaternion(float4 q)
 	return m;
 }
 
+
 // input content, could also lookup into ply file data
+// @param SplatOffset /*$(Variable:SplatOffset)*/
 // @return visible
-SplatParams getSplatParams(uint splatId)
+SplatParams getSplatParams(uint splatId, float3 SplatOffset)
 {
 	SplatParams ret;
 
     ret.colorAndAlpha = float4(1.0f, 0.7f, 0.2f, 1.0f);
-    ret.pos = float3(4, -1, 4);
+    ret.pos = float3(4, -1, 4) + SplatOffset;
 	ret.rot = normalize(float4(1, 2, 3, 1));
 	ret.linearScale = float3(1,2,3) * 0.4f;
 
+    float angle = splatId / 6.0f * 3.14159265f * 2;
+    ret.pos += float3(sin(angle), 0, cos(angle)) * 2.0f;
+    ret.colorAndAlpha.rgb = float3(sin(angle), 0.5f, cos(angle)) * 0.3f + 0.3f;
+    if(splatId == 0)
+        ret.colorAndAlpha.rgb = 1;
+
 	return ret;
 }
+
 
 // assumes splatParams.rot is normalized
 float4x4 computeSplatBase(SplatParams splatParams)

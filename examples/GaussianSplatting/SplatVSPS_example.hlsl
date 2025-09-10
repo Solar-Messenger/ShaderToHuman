@@ -134,7 +134,7 @@ VSOutput mainVS(VSInput input)
 	// x:-1 / 1, y:-1 / 1
 	float2 xy = uv * 2.0f - 1.0f;
 
-	uint splatId = 0;
+	uint splatId = input.instanceId;
 
     float2 resolution = /*$(Variable:iFrameBufferSize)*/.xy;
 
@@ -144,9 +144,7 @@ VSOutput mainVS(VSInput input)
     float4x4 worldToView = transpose(/*$(Variable:ViewMtx)*/);
 	float2 dimensions = /*$(Variable:iFrameBufferSize)*/.xy;
 
-	SplatParams splatParams = getSplatParams(splatId);
-
-    splatParams.pos += /*$(Variable:SplatOffset)*/;
+	SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
 
     SplatRasterizeParams params;
     bool visible = computeSplatRasterizeParams(splatParams, params, dimensions, worldToClip, viewToClip, worldToView);
@@ -202,6 +200,9 @@ PSOutput mainPS(VSOutput input)
 
 	// Frame buffer blend is not doing this so we have to do it here
 	ret.colorTarget.rgb *= ret.colorTarget.a;
+
+	// hack
+//	ret.colorTarget = 1;
 
 	return ret;
 }

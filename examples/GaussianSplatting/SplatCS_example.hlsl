@@ -44,8 +44,7 @@ void scene(inout Context3D context)
 
     uint splatId = 0;
 
-	SplatParams splatParams = getSplatParams(splatId);
-    splatParams.pos += /*$(Variable:SplatOffset)*/;
+	SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
 
 	float4x4 splatBase = computeSplatBase(splatParams);
 
@@ -147,22 +146,15 @@ void stochasticSplats(inout Context3D context, inout uint rndState)
 {
     float3 rayStart = context.ro + context.rd * /*$(Variable:rayStart)*/;
 
-    uint splatId = 0;
-
     // maxT is defined by the scene content (checkerboard and the UI settings)
     float maxT = min(/*$(Variable:rayEnd)*/, context.depth) - /*$(Variable:rayStart)*/;
 
     for(uint i = 0; i < 6; ++i)
 //    for(uint i = 0; i < 1; ++i)
     {
-        float angle = i / 6.0f * 3.14159265f * 2;
+	    uint splatId = i;
 
-        SplatParams splatParams = getSplatParams(splatId);
-        splatParams.pos += /*$(Variable:SplatOffset)*/;
-        splatParams.pos += float3(sin(angle), 0, cos(angle)) * 2.0f;
-        splatParams.colorAndAlpha.rgb = float3(sin(angle), 0.5f, cos(angle)) * 0.3f + 0.3f;
-        if(i == 0)
-            splatParams.colorAndAlpha.rgb = 1;
+        SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
 
         float rndDepth = nextRand(rndState);
         float4 sRGBOutput = SplatRayCast(rayStart, context.rd, splatParams, rndDepth, maxT);
@@ -230,8 +222,7 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
     float4x4 viewToClip = transpose(/*$(Variable:ProjMtx)*/);
     float4x4 worldToView = transpose(/*$(Variable:ViewMtx)*/);
 
-	SplatParams splatParams = getSplatParams(splatId);
-    splatParams.pos += /*$(Variable:SplatOffset)*/;
+	SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
 
     bool visible = computeSplatRasterizeParams(splatParams, params, dimensions, worldToClip, viewToClip, worldToView);
 

@@ -4,7 +4,7 @@
         "ProjMtx_textureName": "FrameBuffer"
     },
     "snapshot": {
-        "resourceViewNodeIndex": 1,
-        "resourceViewResourceIndex": 2
+        "resourceViewNodeIndex": 4,
+        "resourceViewResourceIndex": 3
     }
 }

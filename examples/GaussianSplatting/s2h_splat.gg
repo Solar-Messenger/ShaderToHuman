@@ -254,6 +254,36 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "Clear",
+            "fileName": "Clear.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "ClearDepth",
+            "fileName": "ClearDepth.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
         }
     ],
     "structs": [
@@ -390,6 +420,7 @@
                         "dstPin": "resource"
                     }
                 ],
+                "hideInViewer": true,
                 "shader": {
                     "name": "SplatTestBase"
                 },
@@ -450,6 +481,7 @@
                         "dstPin": "resource"
                     }
                 ],
+                "hideInViewer": true,
                 "shader": {
                     "name": "SplatTestBase"
                 },
@@ -510,7 +542,7 @@
             "resourceTexture": {
                 "name": "C3",
                 "editorPos": [
-                    315.0,
+                    299.0,
                     34.0
                 ],
                 "format": {
@@ -547,6 +579,7 @@
                         "dstPin": "resource"
                     }
                 ],
+                "hideInViewer": true,
                 "shader": {
                     "name": "SplatTestBase"
                 },
@@ -611,11 +644,114 @@
                     }
                 }
             }
+        },
+        {
+            "resourceTexture": {
+                "name": "C4",
+                "editorPos": [
+                    11.0,
+                    306.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionDrawCall": {
+                "name": "DrawQuad",
+                "editorPos": [
+                    485.0,
+                    191.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "vertexShader": {
+                    "name": "SplatTestVS"
+                },
+                "pixelShader": {
+                    "name": "SplatTestPS"
+                },
+                "countPerInstance": 6,
+                "instanceCount": 2,
+                "depthTargetClear": true,
+                "depthTargetClearValue": 1.0,
+                "colorTargets": [
+                    {
+                        "node": "ClearColor",
+                        "pin": "Output"
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "depthTarget": {
+                    "node": "Depth",
+                    "pin": "resource"
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Depth",
+                "editorPos": [
+                    91.0,
+                    194.0
+                ],
+                "format": {
+                    "format": "D32_Float"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "ClearColor",
+                "editorPos": [
+                    219.0,
+                    306.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "C4",
+                        "dstPin": "resource"
+                    }
+                ],
+                "hideInViewer": true,
+                "shader": {
+                    "name": "Clear"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
         }
-    ],
-    "settings": {
-		"common": {
-			"createPDBsAndBinaries": false
-		}
-    }
+    ]
 }
