@@ -126,12 +126,12 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         s2h_printTxt(ui, 'n', 'c', 't', 'i', 'o', 'n');
         s2h_printLF(ui);
 
+        s2h_setScale(ui, 2);
         ui.textColor.rgb = float3(1,1,1);
         float2 rangeX = float2(0, 3.14159265f * 2);
-        float2 rangeY = float2(1.3f, -1.3f);
+        float2 rangeY = float2(-1.3f, 1.3f);
         s2h_function(ui, 0, float4(0,0,0,0.45f), int2(22, 8), rangeX, rangeY);
 
-        s2h_setScale(ui, 1);
         ui.textColor.rgb = float3(0, 0, 0);
         s2h_printTxt(ui, 'x', ':', ' ');
         s2h_printFloat(ui, rangeX.x);

@@ -163,6 +163,10 @@ bool s2h_tableLookupInt(uint column, uint row, out int outValue);
 bool s2h_tableLookupFloat(uint column, uint row, out float outValue);
 // to be implemented by the user, for s2h_function()
 float s2h_floatLookupFloat(uint functionId, float x);
+// required you to implement s2h_floatLookupFloat()
+// @param rangeX float2(left, right) e.g. float2(0, 2.0f * 3.1415f)
+// @param rangeY float2(top, bottom) e.g. float2(-1, 1)
+void s2h_function(inout ContextGather ui, uint functionId, float4 backgroundColor, int2 sizeInCharacters, float2 rangeX, float2 rangeY);
 #endif // S2H_GLSL
 
 // helper functions ----------------------------------------------------------------------
@@ -1080,26 +1084,29 @@ void s2h_tableFloat(inout ContextGather ui, uint column, float4 backgroundColor,
 	} 
 } 
  
-// @param rangeX float2(min, max) 
-// @param rangeY float2(min, max) 
 void s2h_function(inout ContextGather ui, uint functionId, float4 backgroundColor, int2 sizeInCharacters, float2 rangeX, float2 rangeY) 
 { 
+	float scaledFontSize = s2h_fontSize() * ui.scale;
+
 	float2 backup = ui.pxCursor; 
 	float2 localPos = ui.pxPos - ui.pxCursor; 
-	float2 pxSize = float2(sizeInCharacters) * s2h_fontSize(); 
+	float2 pxSize = float2(sizeInCharacters) * scaledFontSize; 
  
 	if(localPos.x >= 0.0f && localPos.y >= 0.0f && localPos.x < pxSize.x && localPos.y < pxSize.y) 
-	{ 
+	{
+		// rangeX.x .. rangeX.y
 		float x = lerp(rangeX.x, rangeX.y, localPos.x / pxSize.x); 
- 
+
 		ui.dstColor = lerp(ui.dstColor, float4(backgroundColor.rgb, 1), backgroundColor.a * (1.0f - ui.dstColor.a)); 
  
-		int row = int(localPos.y / s2h_fontSize());
+		int row = int(localPos.y / scaledFontSize);
  
-		ui.pxCursor.y = backup.y + floor(localPos.y / s2h_fontSize()) * s2h_fontSize(); 
+		ui.pxCursor.y = backup.y + floor(localPos.y / scaledFontSize) * scaledFontSize; 
  
-		float y = s2h_floatLookupFloat(functionId, x); 
-		float pxY = (y - rangeY.x) / (rangeY.y - rangeY.x) * pxSize.y; 
+		// rangeY.x .. rangeY.y
+		float y = s2h_floatLookupFloat(functionId, x);
+		// 0 .. pxSize.y
+		float pxY = (1.0f - (y - rangeY.x) / (rangeY.y - rangeY.x)) * pxSize.y; 
  
 		if(pxY < localPos.y) 
 			ui.dstColor = lerp(ui.dstColor, float4(ui.textColor.rgb, 1), ui.textColor.a * (1.0f - ui.dstColor.a));	 
