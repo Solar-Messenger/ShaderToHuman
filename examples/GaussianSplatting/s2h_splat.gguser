@@ -4,16 +4,16 @@
         "ProjMtx_textureName": "C0"
     },
     "snapshot": {
-        "resourceViewNodeIndex": 11,
-        "resourceViewResourceIndex": 4,
+        "resourceViewNodeIndex": 17,
+        "resourceViewResourceIndex": 2,
         "cameraPos": [
-            -11.746883392333985,
-            4.049180030822754,
-            2.229029655456543
+            -2.47162127494812,
+            6.283848285675049,
+            -14.126940727233887
         ],
         "cameraAltitudeAzimuth": [
-            -0.17811556160449983,
-            4.737196445465088
+            -0.29421553015708926,
+            6.014225959777832
         ],
         "savedVariables": [
             {
@@ -22,7 +22,7 @@
             },
             {
                 "name": "frameRandom",
-                "value": "false"
+                "value": "true"
             }
         ]
     }

@@ -256,7 +256,7 @@
             ]
         },
         {
-            "name": "Clear",
+            "name": "ClearColor",
             "fileName": "Clear.hlsl",
             "entryPoint": "mainCS",
             "resources": [
@@ -284,6 +284,42 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "CustomResolve",
+            "fileName": "CustomResolveMSAA.hlsl",
+            "entryPoint": "mainCS",
+            "resources": [
+                {
+                    "name": "TextureIn",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    },
+                    "texture": {
+                        "dimension": "Texture2DMS"
+                    }
+                },
+                {
+                    "name": "TextureOut",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "ClearColorPS",
+            "fileName": "ClearColorPS.hlsl",
+            "type": "Pixel"
+        },
+        {
+            "name": "FullscreenQuadVS",
+            "fileName": "FullscreenQuadVS.hlsl",
+            "type": "Vertex"
         }
     ],
     "structs": [
@@ -711,7 +747,7 @@
             "resourceTexture": {
                 "name": "Depth",
                 "editorPos": [
-                    91.0,
+                    11.0,
                     194.0
                 ],
                 "format": {
@@ -744,13 +780,195 @@
                 ],
                 "hideInViewer": true,
                 "shader": {
-                    "name": "Clear"
+                    "name": "ClearColor"
                 },
                 "dispatchSize": {
                     "variable": {
                         "name": "iFrameBufferSize"
                     }
                 }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Depth MSAA",
+                "editorPos": [
+                    11.0,
+                    450.0
+                ],
+                "format": {
+                    "format": "D32_Float"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                },
+                "dimension": "Texture2DMS",
+                "msaaSettings": {
+                    "sampleCount": 8
+                }
+            }
+        },
+        {
+            "actionDrawCall": {
+                "name": "DrawQuad MSAA",
+                "editorPos": [
+                    485.0,
+                    406.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "hideInViewer": true,
+                "vertexShader": {
+                    "name": "SplatTestVS"
+                },
+                "pixelShader": {
+                    "name": "SplatTestPS"
+                },
+                "countPerInstance": 6,
+                "instanceCount": 6,
+                "depthTargetClear": true,
+                "depthTest": "Greater",
+                "colorTargets": [
+                    {
+                        "node": "Clear MSAA",
+                        "pin": "colorTarget0"
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "depthTarget": {
+                    "node": "Depth MSAA",
+                    "pin": "resource"
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "C5 MSAA ",
+                "editorPos": [
+                    -85.0,
+                    658.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                },
+                "dimension": "Texture2DMS",
+                "msaaSettings": {
+                    "sampleCount": 8
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "CustomResolve MSAA",
+                "editorPos": [
+                    757.0,
+                    498.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "TextureIn",
+                        "dstNode": "DrawQuad MSAA",
+                        "dstPin": "colorTarget0"
+                    },
+                    {
+                        "srcPin": "TextureOut",
+                        "dstNode": "C5 ",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "CustomResolve"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "C5 ",
+                "editorPos": [
+                    443.0,
+                    658.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "iFrameBufferSize"
+                    }
+                },
+                "msaaSettings": {
+                    "sampleCount": 4
+                }
+            }
+        },
+        {
+            "actionDrawCall": {
+                "name": "Clear MSAA",
+                "editorPos": [
+                    117.0,
+                    569.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "hideInViewer": true,
+                "vertexShader": {
+                    "name": "FullscreenQuadVS"
+                },
+                "pixelShader": {
+                    "name": "ClearColorPS"
+                },
+                "countPerInstance": 6,
+                "depthWrite": false,
+                "colorTargets": [
+                    {
+                        "node": "C5 MSAA ",
+                        "pin": "resource"
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
             }
         }
     ]

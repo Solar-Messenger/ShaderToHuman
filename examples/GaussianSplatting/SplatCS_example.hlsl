@@ -11,7 +11,7 @@
 // 1: low quality
 // 16: high quality
 // 64: very high quality
-#define SAMPLE_COUNT 64
+#define SAMPLE_COUNT 8
 
 // RWStructuredBuffer<Struct_UIState> UIState : register(u1);  // need to be transient to maintain state
 
@@ -43,11 +43,8 @@ void scene(inout Context3D context)
     float4x4 worldToView = transpose(/*$(Variable:ViewMtx)*/);
 
     uint splatId = 0;
-
 	SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
-
 	float4x4 splatBase = computeSplatBase(splatParams);
-
     // splat basis
     s2h_drawBasis(context, splatBase, GAUSSIAN_CUTOFF_SCALE);
 }
@@ -135,18 +132,14 @@ void baseCS(uint2 DTid : SV_DispatchThreadID)
 
     float4 sRGBOutput = float4(s2h_accurateLinearToSRGB(linearOutput.rgb), linearOutput.a);
 
-    // sRGB test ramp/gradient on top of the screen, first 256 pixels should have a ramp of color from 0 to 255 
-    // this means we output directly in sRGB space
-//    if(DTid.y < 32)
-//        sRGBOutput = float4(pxPos.xxx / 256.0f, 1);
-
-
     Output[DTid] = sRGBOutput;
 }
 
 // @return linearColor with Alpha
-void stochasticSplats(inout Context3D context, inout uint rndState)
+void stochasticSplats(inout Context3D context, inout uint _rndState, uint2 DTid, uint sampleId)
 {
+    uint rndState = initRand(dot(uint3(DTid,0), sampleId * 12345 + uint3(82927, 21313, 1)), 0x12345678 + /*$(Variable:frameRandom)*/ * /*$(Variable:iFrame)*/);
+
     float3 rayStart = context.ro + context.rd * /*$(Variable:rayStart)*/;
 
     // maxT is defined by the scene content (checkerboard and the UI settings)
@@ -159,12 +152,14 @@ void stochasticSplats(inout Context3D context, inout uint rndState)
 
         SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
 
-        float rndDepth = nextRand(rndState);
+//        float rndDepth = nextRand(rndState);
+        float rndDepth = 0.5f;
         float4 sRGBOutput = SplatRayCast(rayStart, context.rd, splatParams, rndDepth, maxT);
 
         if(1)   // stochastic
         {
             if(sRGBOutput.a > nextRand(rndState))
+//            if(sRGBOutput.a > samplePhase + 0.5f / 8)
             if(rndDepth < context.depth)
             {
                 context.depth = rndDepth;
@@ -186,9 +181,6 @@ void stochasticSplats(inout Context3D context, inout uint rndState)
 [numthreads(8, 8, 1)]
 void mainCS(uint2 DTid : SV_DispatchThreadID)
 {
-    if(DTid.y < 32)
-        return;
-
     uint2 pxPos = DTid;
     float2 pxPosFloat = pxPos + 0.5f;
     float2 dimensions = /*$(Variable:iFrameBufferSize)*/.xy;
@@ -311,7 +303,7 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
             {
                 Context3D innerContext = context;
 
-                stochasticSplats(innerContext, rndState);
+                stochasticSplats(innerContext, rndState, DTid, i);
                 sum += float4(innerContext.dstColor.rgb * innerContext.dstColor.a, innerContext.dstColor.a);    // do premultplied (todo)
             }
             context.dstColor = sum / count;

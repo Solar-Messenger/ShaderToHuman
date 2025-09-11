@@ -5,6 +5,7 @@
 
 #include "../../include/s2h.hlsl"
 #include "../../include/s2h_3d.hlsl"
+#include "SplatCommon.hlsl"
 
 #ifdef S2H_GLSL
     // shadertoy
@@ -26,13 +27,25 @@
 
 /*$(ShaderResources)*/
 
-[numthreads(8, 8, 1)]
-void mainCS(uint2 DTid : SV_DispatchThreadID)
+struct VSOutput // AKA PSInput
 {
+	// for xbox needs this to be last
+	float4 position : SV_POSITION;
+};
+
+struct PSOutput
+{
+	// linear color, not sRGB
+	float4 colorTarget : SV_Target0;
+};
+
+PSOutput main(VSOutput input)
+{
+	uint2 pxPos = (int2)input.position.xy;
+
     float3 background = float3(0.1f, 0.2f, 0.3f) * 0.7f;
 
     float2 dimensions = /*$(Variable:iFrameBufferSize)*/.xy;
-    uint2 pxPos = DTid;
 
     float3 color;
 
@@ -41,7 +54,7 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
     {
         float3 darkColor = float3(0.27f, 0.27f, 0.27f * 1.2f);
         float3 lightColor = float3(0.29f, 0.29f, 0.29f * 1.2f);
-        uint2 gridPos = DTid / 16;
+        uint2 gridPos = pxPos / 16;
         bool checker = (gridPos.x % 2) == (gridPos.y % 2);
         color = checker ? lightColor : darkColor;
     }
@@ -76,8 +89,20 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	context.dstColor.rgb = linearOutput;
 
     s2h_drawCheckerBoard(context, offset);
-//	s2h_drawSkybox(context);
+
+    uint splatId = 0;
+	SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
+	float4x4 splatBase = computeSplatBase(splatParams);
+    // splat basis
+    s2h_drawBasis(context, splatBase, GAUSSIAN_CUTOFF_SCALE);
+
 	color = context.dstColor.rgb;
 
-    Output[DTid] = float4(s2h_accurateLinearToSRGB(color), 1.0f);
+//	float3 color = float3(1,1,1);
+
+	PSOutput ret;
+
+    ret.colorTarget = float4(s2h_accurateLinearToSRGB(color), 1.0f);
+
+	return ret;
 }

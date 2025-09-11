@@ -315,6 +315,9 @@ SplatParams getSplatParams(uint splatId, float3 SplatOffset)
     if(splatId == 0)
         ret.colorAndAlpha.rgb = 1;
 
+	// uncomment to only see one splat
+//    if(splatId != 0)	ret.colorAndAlpha.a = 0;
+
 	return ret;
 }
 

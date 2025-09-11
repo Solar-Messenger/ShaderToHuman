@@ -38,6 +38,7 @@ struct PSOutput
 	// linear color, not sRGB
 	float4 colorTarget : SV_Target0;
 	float depth :SV_DEPTH; 
+	uint coverage : SV_Coverage;
 };
 
 /*
@@ -187,7 +188,8 @@ PSOutput mainPS(VSOutput input)
 	// seems 3DGS is defined in sRGB, which seems wrong but makes porting to older platforms and the web easier
 	float4 sRGBOutput = params.evaluate(input.position.xy);
 
-	float4 linearOutput = float4(s2h_accurateSRGBToLinear(sRGBOutput.rgb), sRGBOutput.a);
+//	float4 linearOutput = float4(s2h_accurateSRGBToLinear(sRGBOutput.rgb), sRGBOutput.a);
+	float4 linearOutput = float4(sRGBOutput.rgb, sRGBOutput.a);
 
 	// visualize 2D OBB (oriented bounding box = quad) around the splat that is the quad
 	if(1)
@@ -210,9 +212,32 @@ PSOutput mainPS(VSOutput input)
     float4x4 viewToClip = transpose(/*$(Variable:ProjMtx)*/);
 	ret.depth = deviceDepthFromViewLinearDepth(-params.splatZ.x, viewToClip);
 
-    uint rndState = initRand(dot(uint3(pixPos,0), uint3(82927, 21313, 1)), input.splatId + 0x12345678 + /*$(Variable:frameRandom)*/ * /*$(Variable:iFrame)*/);
-    if(sRGBOutput.a <= nextRand(rndState))
-		clip(-1);
+    uint rndState = initRand(dot(uint3(pixPos,0), uint3(82927, 21313, 1)), input.splatId * 12345 + 0x12345678 + /*$(Variable:frameRandom)*/ * /*$(Variable:iFrame)*/);
+
+	// no MSAA
+//    if(sRGBOutput.a <= nextRand(rndState))
+//		clip(-1);
+
+	// 4: 4x MSAA
+	// 8: 8x MSAA
+	const uint sampleCount = 8;
+
+	// 0..1
+	float rnd = nextRand(rndState);
+
+//	rnd = 0.5f;
+
+	const uint sampleMask = (1u << sampleCount) - 1;
+	ret.coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + rnd);	// todo: improve
+
+	// random offset for overlapping primitives, could be improved further, ideally all bits are independent
+//	if(pixPos.x > 500)
+	{
+		ret.coverage = ret.coverage | (ret.coverage << sampleCount);
+		ret.coverage = ret.coverage >> uint((sampleCount - 0.001f) * rnd);
+	}
+//	ret.colorTarget=1;
+//	ret.coverage = 128u;
 
 	return ret;
 }
