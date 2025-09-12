@@ -22,6 +22,8 @@
 // around sqrt(2), depending on other settings, todo: revise
 #define MIN_PIXEL_RADIUS 1.0f
 
+#define FIXUP_MUL 0.5f
+
 struct SplatParams
 {
 	//
@@ -316,7 +318,7 @@ SplatParams getSplatParams(uint splatId, float3 SplatOffset)
         ret.colorAndAlpha.rgb = 1;
 
 	// uncomment to only see one splat
-//    if(splatId != 0)	ret.colorAndAlpha.a = 0;
+//    if(splatId != 0) { ret.linearScale = 0; ret.colorAndAlpha.a = 0; }
 
 	return ret;
 }

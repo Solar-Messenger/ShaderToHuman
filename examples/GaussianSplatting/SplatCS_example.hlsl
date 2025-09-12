@@ -135,7 +135,6 @@ void baseCS(uint2 DTid : SV_DispatchThreadID)
     Output[DTid] = sRGBOutput;
 }
 
-// @return linearColor with Alpha
 void stochasticSplats(inout Context3D context, inout uint _rndState, uint2 DTid, uint sampleId)
 {
     uint rndState = initRand(dot(uint3(DTid,0), sampleId * 12345 + uint3(82927, 21313, 1)), 0x12345678 + /*$(Variable:frameRandom)*/ * /*$(Variable:iFrame)*/);
@@ -152,8 +151,7 @@ void stochasticSplats(inout Context3D context, inout uint _rndState, uint2 DTid,
 
         SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
 
-//        float rndDepth = nextRand(rndState);
-        float rndDepth = 0.5f;
+        float rndDepth = nextRand(rndState);
         float4 sRGBOutput = SplatRayCast(rayStart, context.rd, splatParams, rndDepth, maxT);
 
         if(1)   // stochastic

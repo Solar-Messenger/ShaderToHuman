@@ -177,6 +177,7 @@ VSOutput mainVS(VSInput input)
 	return output;
 }
 
+
 PSOutput mainPS(VSOutput input)
 {
 	int2 pixPos = (int2)input.position.xy;
@@ -192,7 +193,7 @@ PSOutput mainPS(VSOutput input)
 	float4 linearOutput = float4(sRGBOutput.rgb, sRGBOutput.a);
 
 	// visualize 2D OBB (oriented bounding box = quad) around the splat that is the quad
-	if(1)
+	if(0)
 	{
 		float2 m = min(input.uv, 1.0f - input.uv);
 		float d = min(m.x, m.y);
@@ -218,29 +219,75 @@ PSOutput mainPS(VSOutput input)
 	float rnd = nextRand(rndState);
 
 	// no MSAA
-#if MSAA == 1
+//#if MSAA == 1
+	// test
 
-	ret.coverage = 0x1;
-	if(sRGBOutput.a <= rnd)
-		clip(-1);
-#else
+//	ret.coverage = 0x1;
+//	if(sRGBOutput.a <= rnd)
+//		clip(-1);
+//#elif MSAA == 8
+//	ret.colorTarget.rgb = 1;
 
+//#else
 	// 4: 4x MSAA
 	// 8: 8x MSAA
 	const uint sampleCount = 8;
 
-//	rnd = 0.5f;
-
 	const uint sampleMask = (1u << sampleCount) - 1;
-	ret.coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + rnd);	// todo: improve
+
+	// 0..1
+	uint step = floor(saturate(sRGBOutput.a) * (sampleCount));
+	float steps = step / (float)sampleCount;
+
+	uint coverage = 0xff;
+
+#if WEIGHT_EXPERIMENT == 1
+
+//	float quantizedAlpha = floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f));
+//	coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + rnd);	// todo: improve
+//	coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + 1);	// todo: improve
+	coverage = sampleMask >> (uint)(sampleCount - step);	// todo: improve
+//	overage = sampleMask >> (uint)quantizedAlpha;	// todo: improve
+
+//	coverage = 0xff;
+
+
+	float fixup = sRGBOutput.a / steps;
+
+	// at least smooth
+	fixup = fixup * (1 - steps);
+	// remap to be linear
+	fixup = fixup / (1 - sRGBOutput.a);
+
+//	fixup = 1;
+	if(step == 0)
+	{
+		if(sRGBOutput.a * sampleCount <= rnd)
+			coverage = 0;
+		else
+			coverage = 0x1;
+
+	//	coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + rnd);	// todo: improve
+		fixup = 1.0f;
+	}
+
+	ret.colorTarget.a = fixup * FIXUP_MUL;
+
+#else // WEIGHT_EXPERIMENT == 1
+
+	coverage = sampleMask >> (uint)floor(saturate(1-sRGBOutput.a) * (sampleCount - 0.001f) + rnd);	// todo: improve
+
+#endif
+
 
 	// random offset for overlapping primitives, could be improved further, ideally all bits are independent
-//	if(pixPos.x > 500)
 	{
-		ret.coverage = ret.coverage | (ret.coverage << sampleCount);
-		ret.coverage = ret.coverage >> uint((sampleCount - 0.001f) * rnd);
+		coverage = coverage | (coverage << sampleCount);
+		// todo: something is wrong here
+		coverage = coverage >> uint((sampleCount - 0.001f) * rnd);
 	}
-#endif
+	ret.coverage = coverage;
+//#endif
 
 	return ret;
 }

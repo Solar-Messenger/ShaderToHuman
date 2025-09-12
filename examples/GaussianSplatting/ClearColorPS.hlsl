@@ -39,6 +39,65 @@ struct PSOutput
 	float4 colorTarget : SV_Target0;
 };
 
+/*
+// works well, assumes no normalize
+float s2h_floatLookupFloat(uint functionId, float x)
+{
+	float steps = floor(x * 8) / 8.0f;
+//	float steps = floor(x * 8 + 1) / 8.0f;	// can we do this ?
+	float halfFixup = x / steps * 0.5f;
+	float end = steps * halfFixup * 2.0f;
+
+	if(functionId == 1)
+		return steps;
+	if(functionId == 2)
+		return halfFixup;
+	if(functionId == 3)
+		return end;
+
+	return x;
+}
+*/
+
+float sqr(float x)
+{
+	return x * x;
+}
+
+// with normalize
+float s2h_floatLookupFloat(uint functionId, float x)
+{
+	float4 gpt = /*$(Variable:GeneralPurposeTweak)*/;
+
+	float colorA = 0.1f, colorAAlpha = 1.0f;
+	float colorB = 0.9f;
+//	float colorA = 0.0f, colorAAlpha = 1.0f;
+//	float colorB = 1.0f;
+
+	// 0..1
+	float steps = floor(x * 8) / 8.0f;
+//	float steps = floor(x * 8 + 1) / 8.0f;	// can we do this ?
+	float fixup = x / steps;
+
+	// at least smooth
+	fixup = fixup * (1 - steps);
+	// remap to be linear
+	fixup = fixup / (1 - x);
+
+	float sumColor = colorA * (1 - steps) * colorAAlpha + colorB * steps * fixup;
+	float sumAlpha = (colorAAlpha) * (1 - steps) + (fixup) * steps;
+	float color = sumColor / sumAlpha;
+
+	if(functionId == 1)
+		return steps;
+	if(functionId == 2)
+		return fixup * FIXUP_MUL;
+	if(functionId == 3)
+		return color;
+
+	return lerp(colorA, colorB, x);
+}
+
 PSOutput main(VSOutput input)
 {
 	uint2 pxPos = (int2)input.position.xy;
@@ -67,6 +126,18 @@ PSOutput main(VSOutput input)
         s2h_init(ui, pxPos);
 
 		s2h_drawSRGBRamp(ui, float2(2, 2));
+
+#if WEIGHT_EXPERIMENT == 1
+		s2h_setCursor(ui, float2(10, 50));
+		// uses s2h_floatLookupFloat()
+		s2h_function(ui, 0, float4(0,0,0,0.5f), int2(50,16), float2(0,1), float2(0,1));
+		s2h_printLF(ui);
+		s2h_function(ui, 1, float4(0,0,0,0.5f), int2(50,16), float2(0,1), float2(0,1));
+		s2h_printLF(ui);
+		s2h_function(ui, 2, float4(0,0,0,0.5f), int2(50,16), float2(0,1), float2(0,1));
+		s2h_printLF(ui);
+		s2h_function(ui, 3, float4(0,0,0,0.5f), int2(50,16), float2(0,1), float2(0,1));
+#endif
 
         linearOutput = lerp(linearOutput, ui.dstColor.rgb, ui.dstColor.a);
     }
@@ -102,7 +173,10 @@ PSOutput main(VSOutput input)
 
 	PSOutput ret;
 
-    ret.colorTarget = float4(s2h_accurateLinearToSRGB(color), 1.0f);
+    ret.colorTarget = float4(s2h_accurateLinearToSRGB(color), 0.5f);
+//   ret.colorTarget = float4(s2h_accurateLinearToSRGB(color), 0.01f);
+	// hack
+//    ret.colorTarget = float4(0,0,0, 0.5f);
 
 	return ret;
 }

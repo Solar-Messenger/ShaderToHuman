@@ -7,13 +7,13 @@
         "resourceViewNodeIndex": 17,
         "resourceViewResourceIndex": 2,
         "cameraPos": [
-            -2.47162127494812,
-            6.283848285675049,
-            -14.126940727233887
+            -10.478591918945313,
+            13.484803199768067,
+            1.702530026435852
         ],
         "cameraAltitudeAzimuth": [
-            -0.29421553015708926,
-            6.014225959777832
+            -0.7650851011276245,
+            4.876192092895508
         ],
         "savedVariables": [
             {
@@ -22,7 +22,11 @@
             },
             {
                 "name": "frameRandom",
-                "value": "true"
+                "value": "false"
+            },
+            {
+                "name": "GeneralPurposeTweak",
+                "value": "0.000000,1.000000,1.000000,0.000000"
             }
         ]
     }
