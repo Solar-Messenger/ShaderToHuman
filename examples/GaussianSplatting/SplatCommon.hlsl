@@ -515,3 +515,23 @@ float nextRand(inout uint rnd)
 	rnd = (1664525u * rnd + 1013904223u);
 	return float(rnd & 0x00FFFFFF) / float(0x01000000);
 }
+
+
+
+// shared vs VS and PS
+struct VSOutput_Splat // AKA PSInput
+{
+	// one splat, see struct SplatRasterizeParams
+	nointerpolation float4 a : TEXCOORD0;
+	nointerpolation float4 b : TEXCOORD1;
+	nointerpolation float3 c : TEXCOORD2;
+	// for debugging
+	float2 uv : TEXCOORD3;
+
+	// for xbox needs this to be last
+	float4 position : SV_POSITION;
+
+	// for randomization
+	uint splatId : TEXCOORD4;
+};
+

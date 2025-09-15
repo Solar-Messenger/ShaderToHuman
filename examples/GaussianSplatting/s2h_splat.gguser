@@ -6,10 +6,6 @@
     "snapshot": {
         "resourceViewNodeIndex": 17,
         "resourceViewResourceIndex": 2,
-        "cameraAltitudeAzimuth": [
-            -0.0351068377494812,
-            6.261152744293213
-        ],
         "importedResources": [
             {
                 "nodeName": "PlyFile",

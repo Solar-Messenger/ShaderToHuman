@@ -214,7 +214,7 @@
     "shaders": [
         {
             "name": "SplatTestPS",
-            "fileName": "SplatVSPS_example.hlsl",
+            "fileName": "SplatPS_example.hlsl",
             "type": "Pixel",
             "entryPoint": "mainPS"
         },
@@ -235,7 +235,7 @@
         },
         {
             "name": "SplatTestVS",
-            "fileName": "SplatVSPS_example.hlsl",
+            "fileName": "SplatVS_example.hlsl",
             "type": "Vertex",
             "entryPoint": "mainVS",
             "resources": [
@@ -251,7 +251,7 @@
         },
         {
             "name": "SplatTestBase",
-            "fileName": "SplatCS_example.hlsl",
+            "fileName": "SplatBaseCS.hlsl",
             "entryPoint": "baseCS",
             "resources": [
                 {
@@ -260,6 +260,14 @@
                     "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "PlyFile",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
                     }
                 },
                 {
@@ -462,12 +470,18 @@
                 "linkProperties": [
                     {},
                     {},
+                    {},
                     {}
                 ],
                 "connections": [
                     {
                         "srcPin": "Output",
                         "dstNode": "C0",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "PlyFile",
+                        "dstNode": "PlyFile",
                         "dstPin": "resource"
                     },
                     {
@@ -523,12 +537,18 @@
                 "linkProperties": [
                     {},
                     {},
+                    {},
                     {}
                 ],
                 "connections": [
                     {
                         "srcPin": "Output",
                         "dstNode": "C1",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "PlyFile",
+                        "dstNode": "PlyFile",
                         "dstPin": "resource"
                     },
                     {
@@ -621,12 +641,18 @@
                 "linkProperties": [
                     {},
                     {},
+                    {},
                     {}
                 ],
                 "connections": [
                     {
                         "srcPin": "Output",
                         "dstNode": "C3",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "PlyFile",
+                        "dstNode": "PlyFile",
                         "dstPin": "resource"
                     },
                     {
