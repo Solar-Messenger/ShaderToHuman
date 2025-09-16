@@ -246,6 +246,16 @@
                     "buffer": {
                         "type": "Uint"
                     }
+                },
+                {
+                    "name": "plyHeader",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "PlyHeader"
+                        }
+                    }
                 }
             ]
         },
@@ -268,6 +278,17 @@
                     "type": "Buffer",
                     "buffer": {
                         "type": "Uint"
+                    }
+                },
+                {
+                    "name": "PlyHeader",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint",
+                        "typeStruct": {
+                            "name": "PlyHeader"
+                        }
                     }
                 },
                 {
@@ -348,6 +369,36 @@
             "name": "FullscreenQuadVS",
             "fileName": "FullscreenQuadVS.hlsl",
             "type": "Vertex"
+        },
+        {
+            "name": "InitPly",
+            "fileName": "InitPlyCS.hlsl",
+            "NumThreads": [
+                1,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "PlyFile",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    }
+                },
+                {
+                    "name": "PlyHeader",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint",
+                        "typeStruct": {
+                            "name": "PlyHeader"
+                        }
+                    }
+                }
+            ]
         }
     ],
     "structs": [
@@ -383,6 +434,30 @@
                     "name": "s2h_State",
                     "type": "Int4",
                     "dflt": "0,0,0,0"
+                }
+            ]
+        },
+        {
+            "name": "PlyHeader",
+            "fields": [
+                {
+                    "name": "HeaderSize",
+                    "type": "Uint",
+                    "comment": "in UINTS"
+                },
+                {
+                    "name": "Stride",
+                    "type": "Uint",
+                    "comment": "in UINTS"
+                },
+                {
+                    "name": "FormatId",
+                    "type": "Uint",
+                    "comment": "0:classic 3DGS with SH"
+                },
+                {
+                    "name": "VertexCount",
+                    "type": "Uint"
                 }
             ]
         }
@@ -471,6 +546,7 @@
                     {},
                     {},
                     {},
+                    {},
                     {}
                 ],
                 "connections": [
@@ -483,6 +559,11 @@
                         "srcPin": "PlyFile",
                         "dstNode": "PlyFile",
                         "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "PlyHeader",
+                        "dstNode": "InitPly",
+                        "dstPin": "PlyHeader"
                     },
                     {
                         "srcPin": "UIState",
@@ -538,6 +619,7 @@
                     {},
                     {},
                     {},
+                    {},
                     {}
                 ],
                 "connections": [
@@ -550,6 +632,11 @@
                         "srcPin": "PlyFile",
                         "dstNode": "PlyFile",
                         "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "PlyHeader",
+                        "dstNode": "InitPly",
+                        "dstPin": "PlyHeader"
                     },
                     {
                         "srcPin": "UIState",
@@ -642,6 +729,7 @@
                     {},
                     {},
                     {},
+                    {},
                     {}
                 ],
                 "connections": [
@@ -654,6 +742,11 @@
                         "srcPin": "PlyFile",
                         "dstNode": "PlyFile",
                         "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "PlyHeader",
+                        "dstNode": "InitPly",
+                        "dstPin": "PlyHeader"
                     },
                     {
                         "srcPin": "UIState",
@@ -759,6 +852,7 @@
                     {},
                     {},
                     {},
+                    {},
                     {}
                 ],
                 "connections": [
@@ -766,6 +860,11 @@
                         "srcPin": "PlyFile",
                         "dstNode": "PlyFile",
                         "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "plyHeader",
+                        "dstNode": "InitPly",
+                        "dstPin": "PlyHeader"
                     }
                 ],
                 "vertexShader": {
@@ -775,7 +874,7 @@
                     "name": "SplatTestPS"
                 },
                 "countPerInstance": 6,
-                "instanceCount": 6,
+                "instanceCount": 200,
                 "depthTargetClear": true,
                 "depthTest": "Greater",
                 "defines": [
@@ -885,6 +984,7 @@
                     {},
                     {},
                     {},
+                    {},
                     {}
                 ],
                 "connections": [
@@ -892,6 +992,11 @@
                         "srcPin": "PlyFile",
                         "dstNode": "PlyFile",
                         "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "plyHeader",
+                        "dstNode": "InitPly",
+                        "dstPin": "PlyHeader"
                     }
                 ],
                 "hideInViewer": true,
@@ -902,7 +1007,7 @@
                     "name": "SplatTestPS"
                 },
                 "countPerInstance": 6,
-                "instanceCount": 6,
+                "instanceCount": 200,
                 "depthTargetClear": true,
                 "depthTest": "Greater",
                 "defines": [
@@ -1049,13 +1154,55 @@
             "resourceBuffer": {
                 "name": "PlyFile",
                 "editorPos": [
-                    267.0,
-                    130.0
+                    75.0,
+                    66.0
                 ],
-                "transient": false,
                 "visibility": "Imported",
                 "format": {
                     "type": "Uint"
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "InitPly",
+                "editorPos": [
+                    235.0,
+                    159.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "PlyFile",
+                        "dstNode": "PlyFile",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "PlyHeader",
+                        "dstNode": "PlyHeader",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "InitPly"
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "PlyHeader",
+                "editorPos": [
+                    107.0,
+                    -46.0
+                ],
+                "format": {
+                    "structureType": {
+                        "name": "PlyHeader"
+                    }
                 }
             }
         }

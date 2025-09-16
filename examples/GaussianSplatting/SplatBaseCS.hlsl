@@ -54,11 +54,6 @@ void baseCS(uint2 DTid : SV_DispatchThreadID)
 
         ui.textColor.rgb = float3(1,1,1);
 
-        s2h_setScale(ui, 3);
-        s2h_printTxt(ui, 'S', 'p', 'l', 'a');
-        s2h_printTxt(ui, 't', 'T', 'e', 's', 't');
-        s2h_printLF(ui);
-
         s2h_setScale(ui, 2);
         s2h_printLF(ui);
 
@@ -89,6 +84,19 @@ void baseCS(uint2 DTid : SV_DispatchThreadID)
 #endif
 
 		s2h_drawSRGBRamp(ui, float2(2, 2));
+
+/*
+        s2h_printLF(ui);
+        s2h_printInt(ui, PlyHeader[0].HeaderSize);
+        s2h_printLF(ui);
+        s2h_printInt(ui, PlyHeader[0].Stride);	// *4 to get bytes, should be 58*4=232, see https://blog.playcanvas.com/compressing-gaussian-splats/
+        s2h_printLF(ui);
+        s2h_printInt(ui, PlyHeader[0].FormatId);
+        s2h_printLF(ui);
+        s2h_printInt(ui, PlyHeader[0].VertexCount);
+        s2h_printLF(ui);
+*/
+
 
         linearOutput = lerp(linearOutput, float4(ui.dstColor.rgb, 1), ui.dstColor.a);
     }

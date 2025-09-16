@@ -98,6 +98,81 @@ float4 ClipFromScreen(float2 pixelPos, float deviceDepth)
 	return float4(uv * float2(2, -2) - float2(1, -1), deviceDepth, 1.0f);
 }
 
+float getFloat(inout uint p)
+{
+	return asfloat(PlyFile[p++]);
+}
+
+float3 getFloat3(inout uint p)
+{
+	return float3(getFloat(p), getFloat(p), getFloat(p));
+}
+
+float4 getFloat4(inout uint p)
+{
+	return float4(getFloat(p), getFloat(p), getFloat(p), getFloat(p));
+}
+
+// @return linearScale
+float3 unpackScale(float3 scale)
+{
+	return exp(scale);
+}
+
+// see unpackScale()
+float3 packScale(float3 scale)
+{
+	return log(scale);
+}
+
+// @return 0..1, roughly around x=-4 it's 0.0f, around x=+4 it's 1.0f
+float sigmoid(float x)
+{
+	// CUDA Gaussian Splatting implementation
+	// https://github.com/graphdeco-inria/diff-gaussian-rasterization/blob/8064f52ca233942bdec2d1a1451c026deedd320b/cuda_rasterizer/auxiliary.h
+	return 1.0f / (1.0f + exp(-x));
+
+/* // no visual difference
+	if (x >= 0.0f)
+	{
+		return 1.0f / (1.0f + exp(-x));
+	}
+	else
+	{
+		float z = exp(x);
+		return z / (1.0f + z);
+	}
+*/
+}
+
+// see sigmoid()
+float unsigmoid(float x)
+{
+	return -log(1.0f / x - 1.0f);
+}
+
+SplatParams getSplatParamsFromPly(uint splatId, float3 SplatOffset)
+{
+	SplatParams ret = (SplatParams)0;
+
+	uint p = plyHeader[0].HeaderSize + splatId * plyHeader[0].Stride;
+
+	ret.pos = getFloat3(p);
+
+	float3 normal = getFloat3(p);
+
+	float3 colorSH = getFloat3(p);
+	ret.colorAndAlpha.rgb = colorSH * 0.2820948f + 0.5f;
+
+	p += 45;	// SH bands besides 0
+
+	ret.colorAndAlpha.a = sigmoid(getFloat(p));
+	ret.linearScale = unpackScale(getFloat3(p));
+	ret.rot = getFloat4(p);
+
+	return ret;
+}
+
 VSOutput_Splat mainVS(VSInput input)
 {
 	VSOutput_Splat output = (VSOutput_Splat)0;
@@ -123,7 +198,9 @@ VSOutput_Splat mainVS(VSInput input)
     float4x4 worldToView = transpose(/*$(Variable:ViewMtx)*/);
 	float2 dimensions = /*$(Variable:iFrameBufferSize)*/.xy;
 
-	SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
+//	SplatParams splatParams = getSplatParams(splatId, /*$(Variable:SplatOffset)*/);
+
+	SplatParams splatParams = getSplatParamsFromPly(splatId, /*$(Variable:SplatOffset)*/);
 
     SplatRasterizeParams params;
     bool visible = computeSplatRasterizeParams(splatParams, params, dimensions, worldToClip, viewToClip, worldToView);

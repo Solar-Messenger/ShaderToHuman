@@ -709,6 +709,7 @@ void s2h_drawSRGBRamp(inout ContextGather ui, float2 pxPos)
 	ui.pxCursor = backup.pxCursor;
 	ui.scale = backup.scale;
 	ui.textColor = backup.textColor;
+	ui.pxLeftX = backup.pxLeftX;
 }
 
 void s2h_printDisc(inout ContextGather ui, float4 color) 
