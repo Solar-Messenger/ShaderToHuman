@@ -1,27 +1,23 @@
 # Shader To Human (S2H) - HLSL/GLSL library for debugging shaders
 
-This easy to integrate tool is designed to help engineers with shader writing and debugging.
-Documentation and examples get you started quickly. With a shader hot reloading environment like Gigi - rapid prototyping becomes straightforward.
-The [Interactive Documentation](https://electronicarts.github.io/ShaderToHuman) shows how to use the library in GLSL and HLSL.
-You can use it to use PrintF debugging, draw 2d and 3d shapes with few lines of code. No C++ code changes required.
+This tool helps you with shader writing and debugging. It's menat to be used for small specific use cases (printing or drawing a few number, 2D or 3D elements)
+as it was optimized for ease of integration (~ one file, few lines of code) and not render speed for complex UI.
+
+We suggest you browse the [interactive documentation](https://electronicarts.github.io/ShaderToHuman) to see is possible.
+You can explore more samples in [Gigi](https://github.com/electronicarts/gigi) (Search in GigiBrowser for "Shader To Human") and you will see how
+rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw a watch window in the viewport or use 
+2d and 3d shapes with ease. No C++ code changes, no buffer setup or content setup required.
 
 ![Screenshot](images/teaser.png)
 
-## Documentation
-
-TODO: Configurator web link
-
-## Installing and running locally
-
+## Installing the web documentation and running locally
 This is only needed for development on the library. Windows only.
-
 - NodeJS: Install https://nodejs.org/en/download 'Windows Installer x64(.msi)'. Reboot.
 - Run startLocalServer.bat (double click, on first start it will install 'express')
 - Connect a web browser to the shown web address.
 
 ## Roadmap / Plans
-* We might fix and expose the 'Sandbox' tab for in browser shader experiments.
-* We might add CUDA support
+* Reach out for suggestions, maybe CUDA support
 
 ## Support / Authors
 * Martin Mittring MMittring@ea.com Kosmokleaner@Kosmokleaner.de (main author)
