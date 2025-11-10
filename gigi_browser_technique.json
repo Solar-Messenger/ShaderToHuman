@@ -1,10 +1,10 @@
 {
 	"Title": "Shader To Human (S2H)",
-	"Description": "This easy to integrate (soon open source) tool is designed to help engineers with shader writing and debugging. Documentation and examples get you started quickly.  Working best in a shader hot reloading environment like Gigi, rapid prototyping becomes straightforward. We show you how to integrate in your codebase and you can use it to      use PrintF debugging, draw 2d and 3d shapes with few lines of code. No C++ code changes required.",
+	"Description": "This easy to integrate open source tool helps you with shader writing and debugging. Documentation and examples get you started quickly. Working best in a shader hot reloading environment like Gigi, rapid prototyping becomes straightforward. You can integrate in your codebase and use it for PrintF debugging, draw 2d and 3d shapes with few lines of code. No C++ code changes required.",
 	"Author": "Martin Mittring, Anushka Nair",
 	"Tags": "Utility,debugging",
 	"Technique": "examples/s2h_examples.gg",
-	"Website": "https://gitlab.ea.com/mmittring/ShaderToHuman",
+	"Website": "https://github.com/electronicarts/ShaderToHuman",
 	"Screenshot": "images/teaser.png",
 	"GigiVersion": "1.0"
 }
