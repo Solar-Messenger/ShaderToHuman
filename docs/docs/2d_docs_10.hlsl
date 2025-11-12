@@ -152,21 +152,8 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
 
-    s2h_Triangle triA;
-    triA.A = float2(50,1);
-    triA.B = float2(150,100);
-    triA.C = float2(250,1);
-    s2h_drawTriangle(ui, triA, float4(0,0,1,0.5));
-    s2h_Triangle triB;
-    triB.A = float2(230,10);
-    triB.B = float2(160,80);
-    triB.C = float2(300,80);
-    s2h_drawTriangle(ui, triB, float4(0,1,1,0.5));
-    s2h_Triangle triC;
-    triC.A = float2(240,30);
-    triC.B = float2(280,70);
-    triC.C = float2(320,30);
-    s2h_drawTriangle(ui, triC, float4(1,1,1,0.5));
+    // todo
+
 
     float3 background = float3(0.7f, 0.4f, 0.4f);
     float3 linearColor = background * (1.0f - ui.dstColor.a) + ui.dstColor.rgb;

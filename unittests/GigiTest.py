@@ -1,10 +1,10 @@
 # run from GiGi DX12 Viewer in menu entry "File/Run Python Script"
 # and observe the log for success/failure
 
-# /////////////////////////////////////////////////////////////////////////
-# //   Shader To Human (S2H) - HLSL/GLSL library for debugging shaders   //
-# //    Copyright (c) 2024 Electronic Arts Inc.  All rights reserved.    //
-# /////////////////////////////////////////////////////////////////////////
+# //////////////////////////////////////////////////////////////////////////
+# //   Shader To Human (S2H) - HLSL/GLSL library for debugging shaders    //
+# //  Copyright (c) 2024-2025 Electronic Arts Inc.  All rights reserved.  //
+# //////////////////////////////////////////////////////////////////////////
 
 import Host
 import GigiArray

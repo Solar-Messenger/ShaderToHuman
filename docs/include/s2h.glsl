@@ -33,10 +33,10 @@
 
 
 
-/////////////////////////////////////////////////////////////////////////
-//   Shader To Human (S2H) - HLSL/GLSL library for debugging shaders   //
-//    Copyright (c) 2024 Electronic Arts Inc.  All rights reserved.    //
-/////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//   Shader To Human (S2H) - HLSL/GLSL library for debugging shaders    //
+//  Copyright (c) 2024-2025 Electronic Arts Inc.  All rights reserved.  //
+//////////////////////////////////////////////////////////////////////////
 
 // Any potentially API breaking update we should increase the version by 1 allowing other code to adapt to S2H.
 
@@ -183,6 +183,10 @@ void s2h_sliderRGB(inout ContextGather ui, uint widthInCharacters, inout vec3 va
 void s2h_sliderRGBA(inout ContextGather ui, uint widthInCharacters, inout vec4 value);
 
 // not yet for GLSL 
+
+
+
+
 
 
 
@@ -691,6 +695,7 @@ void s2h_drawArrow(inout ContextGather ui, vec2 pxStart, vec2 pxEnd, vec4 color,
     direction = normalize(pxEnd - pxStart);
 
     ui.scale = 2.0f;
+    s2h_printFloat(ui, 1234.0f);
     const float Thickness = 10.0f;
 
     vec2 lineStart = pxStart;
@@ -739,6 +744,7 @@ void s2h_drawSRGBRamp(inout ContextGather ui, vec2 pxPos)
 	ui.pxCursor = backup.pxCursor;
 	ui.scale = backup.scale;
 	ui.textColor = backup.textColor;
+	ui.pxLeftX = backup.pxLeftX;
 }
 
 void s2h_printDisc(inout ContextGather ui, vec4 color) 
@@ -1049,6 +1055,9 @@ void s2h_sliderRGBA(inout ContextGather ui, uint widthInCharacters, inout vec4 v
 }
 
 // not yet for GLSL 
+
+
+
 
 
 
