@@ -1,5 +1,5 @@
 {
-	"Title": "Shader To Human (S2H)",
+	"Title": "Shader To Human (S2H) Hello World",
 	"Description": "Minimial starting point to use Shader To Human (S2H). This tool helps you with shader writing and debugging. It's meant to be used for small specific use cases (printing or drawing a few number, 2D or 3D elements) as it was optimized for ease of integration (~ one file, few lines of code).",
 	"Author": "Martin Mittring, Anushka Nair",
 	"Tags": "Utility,debugging",
