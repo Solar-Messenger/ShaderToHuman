@@ -3,6 +3,8 @@
 This tool helps you with shader writing and debugging. It's meant to be used for small specific use cases (printing or drawing a few number, 2D or 3D elements)
 as it was optimized for ease of integration (~ one file, few lines of code) and not render speed for complex UI.
 
+The permissive BSD 3-Clause license is free for commercial use. Feel free to integrate into your projects.
+
 We suggest you browse the [interactive documentation](https://electronicarts.github.io/ShaderToHuman).
 You can explore more samples in [Gigi](https://github.com/electronicarts/gigi) (Search in GigiBrowser for "Human") and you will see how
 rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw a watch window in the viewport or use 
