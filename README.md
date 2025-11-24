@@ -12,8 +12,8 @@ rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw
 
 Videos and presentation: [Coming soon](https://graphicsprogrammingconference.com/2025)
 
-![Screenshot](images/teaser.png)
-![GaussianSplatting](images/gaussianSplatting.png)
+S2H Features in Gigi: ![Screenshot](images/teaser.png)
+S2H used to render Gaussian Splatting in stochastic rasterizer: ![GaussianSplatting](images/gaussianSplatting.png)
 
 ## Installing the web documentation and running locally
 This is only needed for development on the library. Windows only.
