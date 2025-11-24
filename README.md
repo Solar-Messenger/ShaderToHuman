@@ -1,7 +1,7 @@
 # Shader To Human (S2H) - HLSL/GLSL library for debugging shaders
 
 This tool helps you with shader writing and debugging. It's meant to be used for small specific use cases (printing or drawing a few number, 2D or 3D elements)
-as it was optimized for ease of integration (~ one file, few lines of code) and not render speed for complex UI.
+as it was optimized for ease of integration (~ one file, few lines of code). It is not targeting complex UI or minimal performance impact.
 
 The permissive [BSD 3-Clause license](https://raw.githubusercontent.com/electronicarts/ShaderToHuman/refs/heads/master/LICENSE.txt) is free for commercial use. Feel free to integrate into your projects.
 
