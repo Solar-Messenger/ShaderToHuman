@@ -13,6 +13,7 @@ rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw
 Videos and presentation: [Coming soon](https://graphicsprogrammingconference.com/2025)
 
 ![Screenshot](images/teaser.png)
+![GaussianSplatting](images/gaussianSplatting.png)
 
 ## Installing the web documentation and running locally
 This is only needed for development on the library. Windows only.
