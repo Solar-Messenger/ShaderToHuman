@@ -3,7 +3,7 @@
 This tool helps you with shader writing and debugging. It's meant to be used for small specific use cases (printing or drawing a few number, 2D or 3D elements)
 as it was optimized for ease of integration (~ one file, few lines of code). It is not targeting complex UI or minimal performance impact.
 
-The permissive [BSD 3-Clause license](https://raw.githubusercontent.com/electronicarts/ShaderToHuman/refs/heads/master/LICENSE.txt) makes it free for commercial use.
+The permissive [license](https://raw.githubusercontent.com/electronicarts/ShaderToHuman/refs/heads/master/LICENSE.txt) makes it free for commercial use.
 
 We suggest you browse the [interactive documentation](https://electronicarts.github.io/ShaderToHuman).
 You can explore more samples in [Gigi](https://github.com/electronicarts/gigi) (Search in GigiBrowser for "Human") and you will see how
