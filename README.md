@@ -54,7 +54,7 @@ The source code is released under an open license as detailed in License.txt.
 Functional, Open Source
 
 ## To do:
-With task size in days or hours for a some specific (value does not matter but ratio between tasks should be about right) programmer.
+Smaller task with the size in days (d) or hours (h) for a some programmer (the value does not matter but ratio between tasks should be about right).
 
 1) 4h Pass text in string literals e.g. (ui, “text”) vs (ui, _t, _e, _x, _t) as optional API (for modern HLSL only) [link](https://github.com/GPUOpen-LibrariesAndSDKs/WorkGraphPlayground/blob/main/tutorials/tutorial-0/HelloWorkGraphs.hlsl)
 2) 1d Fix table and function plotting for GLSL. Seems GLSL forward declaration of functions is different from HLSL and we have to find a different solution
