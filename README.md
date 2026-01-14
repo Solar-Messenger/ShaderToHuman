@@ -11,8 +11,6 @@ You can explore more samples in [Gigi](https://github.com/electronicarts/gigi) (
 rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw a watch window in the viewport or use 
 2d and 3d shapes with ease. No C++ code changes, no buffer setup or content setup required.
 
-Videos and presentation: [Coming soon](https://graphicsprogrammingconference.com/2025)
-
 S2H Features in Gigi: ![Screenshot](images/teaser.png)
 S2H used to render [Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting) with a stochastic rasterizer (input .ply was procedurally generated): ![GaussianSplatting](images/gaussianSplatting.png)
 
