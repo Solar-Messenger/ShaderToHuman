@@ -190,11 +190,10 @@ float3 s2h_colorRampRGB(float value);
 // implementation ----------------------------------------------------------------------
 
 #ifndef S2H_FLT_MAX
-#ifdef S2H_GLSL
-    static const float S2H_FLT_MAX = intBitsToFloat(2139095039);
-#else
+	// can result in WebGL warning (Fragment Shader WARNING: 0:248: '3.40282347e+38' : Float overflow) but works
     static const float S2H_FLT_MAX = 3.40282347e+38;
-#endif
+	// works in most GLSL environments and no warning in WebGL
+//    static const float S2H_FLT_MAX = intBitsToFloat(2139095039);
 #endif
 
 // You can define this to provide your own font (different size, visual or better lookup performance by using a texture)
