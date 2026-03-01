@@ -29,7 +29,8 @@ float4 mainPS(VSOutput input) : SV_Target0
     s2h_setScale(ui, 3.0f);
     s2h_printTxt(ui, _H, _e, _l, _l, _o);
     s2h_printLF(ui);
-    s2h_printTxt(ui, _Q, _u, _a, _d);
+    s2h_printTxt(ui, _S, _c, _r, _e);
+    s2h_printTxt(ui, _e, _n);
 
     s2h_drawSRGBRamp(ui, float2(10, 100));
 

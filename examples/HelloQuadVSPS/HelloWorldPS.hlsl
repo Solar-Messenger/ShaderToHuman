@@ -46,6 +46,12 @@ PSOutput mainPS(VSOutput input)
 	s2h_init(ui, input.uv * 256);
 	s2h_setCursor(ui, float2(10, 10));
 	s2h_setScale(ui, 2);
+	s2h_printTxt(ui, _H, _e, _l, _l, _o);
+    s2h_printTxt(ui, _Q, _u, _a, _d);
+	s2h_printLF(ui);
+	s2h_printLF(ui);
+	
+	ui.textColor = float4(0.2f, 0.2f, 0.5f, 1.0f);
 	s2h_printTxt(ui, 'C', 'a', 'm', 'e', 'r', 'a');
 	s2h_printTxt(ui, 'P', 'o', 's', ':');
 	s2h_printLF(ui);
@@ -60,17 +66,17 @@ PSOutput mainPS(VSOutput input)
 	s2h_printFloat(ui, /*$(Variable:CameraPos)*/.z);
 	s2h_printLF(ui);
 	s2h_printLF(ui);
-	s2h_printTxt(ui, 'C', 'a', 'm', 'e', 'r', 'a');
-	s2h_printTxt(ui, 'A', 'n', 'g', 'l', 'e', 's');
-	s2h_printTxt(ui, ':');
-	s2h_printLF(ui);
-	s2h_printLF(ui);
-	s2h_printSpace(ui, 2);
-	s2h_printFloat(ui, /*$(Variable:CameraAltitudeAzimuth)*/.x);
-	s2h_printLF(ui);
-	s2h_printSpace(ui, 2);
-	s2h_printFloat(ui, /*$(Variable:CameraAltitudeAzimuth)*/.y);
-	s2h_printLF(ui);
+//	s2h_printTxt(ui, 'C', 'a', 'm', 'e', 'r', 'a');
+//	s2h_printTxt(ui, 'A', 'n', 'g', 'l', 'e', 's');
+//	s2h_printTxt(ui, ':');
+//	s2h_printLF(ui);
+//	s2h_printLF(ui);
+//	s2h_printSpace(ui, 2);
+//	s2h_printFloat(ui, /*$(Variable:CameraAltitudeAzimuth)*/.x);
+//	s2h_printLF(ui);
+//	s2h_printSpace(ui, 2);
+//	s2h_printFloat(ui, /*$(Variable:CameraAltitudeAzimuth)*/.y);
+//	s2h_printLF(ui);
 
     s2h_drawSRGBRamp(ui, float2(0, 222));
 
