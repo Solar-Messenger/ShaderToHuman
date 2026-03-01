@@ -140,9 +140,19 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
+
+
+
+
     s2h_drawRectangle(ui, vec2(100, 10), vec2(300, 90), vec4(1,0,0,1));
     s2h_drawRectangle(ui, vec2(200, 50), vec2(400, 65), vec4(0,1,0,1));
     s2h_drawRectangle(ui, vec2(150, 25), vec2(350, 75), vec4(0,0,0,0.5f));
+
+
+
+
+
+
 
 
 

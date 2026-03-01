@@ -175,6 +175,16 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
+
+
+
+
+
+
+
+
+
+
     // sRGB gradient
     float value = (pxPos.x - iResolution.xy.x * 0.5f) / 256.0f + 0.5f;
     ui.dstColor = vec4(value, value, value, 1);

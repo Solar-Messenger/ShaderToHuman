@@ -190,6 +190,16 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
+
+
+
+
+
+
+
+
+
+
     vec3 background = vec3(0.7f, 0.4f, 0.4f);
     vec3 linearColor = background * (1.0f - ui.dstColor.a) + ui.dstColor.rgb;
 

@@ -53,13 +53,17 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 #endif
 
 #if SUB_CATEGORY == 2   // circle
-    s2h_drawCircle(ui, float2(100, 50), 40.0f, float4(1,0,0,1), 1.0f);
-    s2h_drawCircle(ui, float2(200, 50), 20.0f, float4(0,1,0,1), 5.0f);
-    s2h_drawCircle(ui, float2(150, 50), 30.0f, float4(0,0,0,0.5f), 8.0f);
+	ui.lineWidth = 1.0f;
+    s2h_drawCircle(ui, float2(100, 50), 40.0f, float4(1,0,0,1));
+	ui.lineWidth = 5.0f;
+    s2h_drawCircle(ui, float2(200, 50), 20.0f, float4(0,1,0,1));
+	ui.lineWidth = 8.0f;
+    s2h_drawCircle(ui, float2(150, 50), 30.0f, float4(0,0,0,0.5f));
 #endif
 
 #if SUB_CATEGORY == 3   // halfSpace
-    s2h_drawCrosshair(ui, ui.mouseInput.xy + 0.5f, 10.0f, float4(1,1,1,1), 2.0f);
+	ui.lineWidth = 2.0f;
+    s2h_drawCrosshair(ui, ui.mouseInput.xy + 0.5f, 10.0f, float4(1,1,1,1));
     int edgeCount = 3;
     bool inside = true;
     float insideAA = 1.0f;
@@ -103,15 +107,20 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 #endif
 
 #if SUB_CATEGORY == 6  // crosshair
-    s2h_drawCrosshair(ui, float2(190 - 140, 50) + 0.5f, 10.0f, float4(0,0,1,1), 1.0f);
+	ui.lineWidth = 1.0f;
+    s2h_drawCrosshair(ui, float2(190 - 140, 50) + 0.5f, 10.0f, float4(0,0,1,1));
 
     // single pixel wide sharp white cross hair with black outline
-    s2h_drawCrosshair(ui, float2(200, 50) + 0.5f, 20.0f, float4(0, 0, 0, 1), 3.0f);
-    s2h_drawCrosshair(ui, float2(200, 50) + 0.5f, 20.0f, float4(1, 1, 1, 1), 1.0f);
+	ui.lineWidth = 3.0f;
+    s2h_drawCrosshair(ui, float2(200, 50) + 0.5f, 20.0f, float4(0, 0, 0, 1));
+	ui.lineWidth = 1.0f;
+    s2h_drawCrosshair(ui, float2(200, 50) + 0.5f, 20.0f, float4(1, 1, 1, 1));
 
     // 2 pixel sharp white sharp white cross hair with black outline
-    s2h_drawCrosshair(ui, float2(360, 50), 30.0f, float4(0, 0, 0, 1), 4.0f);
-    s2h_drawCrosshair(ui, float2(360, 50), 30.0f, float4(1, 1, 1, 1), 2.0f);
+	ui.lineWidth = 4.0f;
+    s2h_drawCrosshair(ui, float2(360, 50), 30.0f, float4(0, 0, 0, 1));
+	ui.lineWidth = 2.0f;
+    s2h_drawCrosshair(ui, float2(360, 50), 30.0f, float4(1, 1, 1, 1));
 
 #endif
 
@@ -121,7 +130,8 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
         float w = float(i) * 1.1f + 1.0f;
         float2 center = float2(50, 50) + float2(90 * i, 0);
         float2 sc = float2(sin(w), cos(w)) * 20.0f;
-        s2h_drawLine(ui, center + sc, center - sc, float4(s2h_indexToColor(uint(i)), 1), 1.0f + float(i) * 4.0f);
+		ui.lineWidth = 1.0f + float(i) * 4.0f;
+        s2h_drawLine(ui, center + sc, center - sc, float4(s2h_indexToColor(uint(i)), 1));
     }
 #endif
 

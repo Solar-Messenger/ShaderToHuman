@@ -146,9 +146,19 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
+
+
+
+
     s2h_drawRectangleAA(ui, vec2(100, 10), vec2(300, 90), vec4(1,0,0,1), vec4(1,1,0,1), 5.0f);
     s2h_drawRectangleAA(ui, vec2(200, 50), vec2(400, 65), vec4(0,0,1,1), vec4(0,1,1,1), 3.0f);
     s2h_drawRectangleAA(ui, vec2(150, 25), vec2(350, 75), vec4(1,1,1,1), vec4(0,0,0,0.5f), 2.0f);
+
+
+
+
+
+
 
 
 

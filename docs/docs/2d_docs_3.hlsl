@@ -73,7 +73,11 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
 
-    s2h_drawCrosshair(ui, ui.mouseInput.xy + 0.5f, 10.0f, float4(1,1,1,1), 2.0f);
+
+
+
+	ui.lineWidth = 2.0f;
+    s2h_drawCrosshair(ui, ui.mouseInput.xy + 0.5f, 10.0f, float4(1,1,1,1));
     int edgeCount = 3;
     bool inside = true;
     float insideAA = 1.0f;
@@ -101,6 +105,12 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
     s2h_printTxt(ui, _n, _o, _A, _A);
     s2h_setCursor(ui, float2(366, 10));
     s2h_printTxt(ui, _A, _A);
+
+
+
+
+
+
 
 
 

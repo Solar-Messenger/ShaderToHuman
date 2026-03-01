@@ -246,9 +246,12 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         // s2h_drawCircle()
         {
             // todo: dark edges around looks wrong, sRGB ?
-            s2h_drawCircle(ui, ui.pxCursor + 10, 10, float4(1,0,0,1), 0);
-            s2h_drawCircle(ui, ui.pxCursor + int2(20, 0) + 10, 10, float4(0,1,0,1), 4);
-            s2h_drawCircle(ui, ui.pxCursor + int2(40, 0) + 10, 10, float4(0,0,1,1), 10);
+			ui.lineWidth = 0.0f;
+            s2h_drawCircle(ui, ui.pxCursor + 10, 10, float4(1,0,0,1));
+			ui.lineWidth = 4.0f;
+            s2h_drawCircle(ui, ui.pxCursor + int2(20, 0) + 10, 10, float4(0,1,0,1));
+			ui.lineWidth = 10.0f;
+            s2h_drawCircle(ui, ui.pxCursor + int2(40, 0) + 10, 10, float4(0,0,1,1));
             s2h_printLF(ui);
             s2h_printLF(ui);
             s2h_printLF(ui);

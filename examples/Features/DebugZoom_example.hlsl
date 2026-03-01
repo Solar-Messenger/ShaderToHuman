@@ -28,7 +28,12 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         s2h_init(ui, pxPos);
         s2h_setCursor(ui, mousePos + float2(30, 30));
 
-        s2h_drawCrosshair(ui, mousePos + 0.5f, 30, float4(1, 1, 1, 1), 1);
+		{
+			float backup = ui.lineWidth;
+			ui.lineWidth = 1.0f;
+			s2h_drawCrosshair(ui, mousePos + 0.5f, 30, float4(1, 1, 1, 1));
+			ui.lineWidth = backup;
+		}
 
         // dark panel behind
         s2h_drawRectangleAA(ui, mousePos + int2(15,15), mousePos + int2(280, 180), float4(1,1,1,0), float4(0.125,0.125,0.125f,0.8f), 2);

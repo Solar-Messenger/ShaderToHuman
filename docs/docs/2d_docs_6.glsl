@@ -152,15 +152,25 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
-    s2h_drawCrosshair(ui, vec2(190 - 140, 50) + 0.5f, 10.0f, vec4(0,0,1,1), 1.0f);
+
+
+
+
+	ui.lineWidth = 1.0f;
+    s2h_drawCrosshair(ui, vec2(190 - 140, 50) + 0.5f, 10.0f, vec4(0,0,1,1));
 
     // single pixel wide sharp white cross hair with black outline
-    s2h_drawCrosshair(ui, vec2(200, 50) + 0.5f, 20.0f, vec4(0, 0, 0, 1), 3.0f);
-    s2h_drawCrosshair(ui, vec2(200, 50) + 0.5f, 20.0f, vec4(1, 1, 1, 1), 1.0f);
+	ui.lineWidth = 3.0f;
+    s2h_drawCrosshair(ui, vec2(200, 50) + 0.5f, 20.0f, vec4(0, 0, 0, 1));
+	ui.lineWidth = 1.0f;
+    s2h_drawCrosshair(ui, vec2(200, 50) + 0.5f, 20.0f, vec4(1, 1, 1, 1));
 
     // 2 pixel sharp white sharp white cross hair with black outline
-    s2h_drawCrosshair(ui, vec2(360, 50), 30.0f, vec4(0, 0, 0, 1), 4.0f);
-    s2h_drawCrosshair(ui, vec2(360, 50), 30.0f, vec4(1, 1, 1, 1), 2.0f);
+	ui.lineWidth = 4.0f;
+    s2h_drawCrosshair(ui, vec2(360, 50), 30.0f, vec4(0, 0, 0, 1));
+	ui.lineWidth = 2.0f;
+    s2h_drawCrosshair(ui, vec2(360, 50), 30.0f, vec4(1, 1, 1, 1));
+
 
 
 

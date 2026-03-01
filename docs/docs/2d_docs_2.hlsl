@@ -67,9 +67,19 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
 
-    s2h_drawCircle(ui, float2(100, 50), 40.0f, float4(1,0,0,1), 1.0f);
-    s2h_drawCircle(ui, float2(200, 50), 20.0f, float4(0,1,0,1), 5.0f);
-    s2h_drawCircle(ui, float2(150, 50), 30.0f, float4(0,0,0,0.5f), 8.0f);
+	ui.lineWidth = 1.0f;
+    s2h_drawCircle(ui, float2(100, 50), 40.0f, float4(1,0,0,1));
+	ui.lineWidth = 5.0f;
+    s2h_drawCircle(ui, float2(200, 50), 20.0f, float4(0,1,0,1));
+	ui.lineWidth = 8.0f;
+    s2h_drawCircle(ui, float2(150, 50), 30.0f, float4(0,0,0,0.5f));
+
+
+
+
+
+
+
 
 
 

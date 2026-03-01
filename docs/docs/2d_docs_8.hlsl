@@ -140,6 +140,16 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
 
+
+
+
+
+
+
+
+
+
+
     // sRGB gradient
     float value = (pxPos.x - S2S_FRAMEBUFFERSIZE().x * 0.5f) / 256.0f + 0.5f;
     ui.dstColor = float4(value, value, value, 1);

@@ -130,12 +130,22 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
 
+
+
+
+
+
+
+
+
+
     for(int i = 0; i < 5; ++i)
     {
         float w = float(i) * 1.1f + 1.0f;
         float2 center = float2(50, 50) + float2(90 * i, 0);
         float2 sc = float2(sin(w), cos(w)) * 20.0f;
-        s2h_drawLine(ui, center + sc, center - sc, float4(s2h_indexToColor(uint(i)), 1), 1.0f + float(i) * 4.0f);
+		ui.lineWidth = 1.0f + float(i) * 4.0f;
+        s2h_drawLine(ui, center + sc, center - sc, float4(s2h_indexToColor(uint(i)), 1));
     }
 
 

@@ -12,6 +12,6 @@
 	"dependencies": {
 		"adm-zip": "^0.5.16",
 		"c-preprocessor": "^0.2.13",
-		"express": "^5.1.0"
+		"express": "^5.2.1"
 	}
 }

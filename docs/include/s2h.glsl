@@ -140,8 +140,9 @@ void s2h_frame(inout ContextGather ui, uint widthInCharacters);
 // draw anti aliased filled disc 
 void s2h_drawDisc(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 color);
 // draw anti aliased circle
-void s2h_drawCircle(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 color, float pxThickness);
-// draw anti aliased circle
+// uses ui.lineWidth
+void s2h_drawCircle(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 color);
+// draw anti aliased half space
 void s2h_drawHalfSpace(inout ContextGather ui, vec3 halfSpace, vec2 visualizePoint, vec4 color, float pxCircleRadius, float pxLineRadius);
 // draw not anti aliased rectangle (fast and simple), 
 // @param pxLeftTop included
@@ -150,10 +151,13 @@ void s2h_drawRectangle(inout ContextGather ui, vec2 pxLeftTop, vec2 pxBottomRigh
 // border half inwards and half outwards, pxThickness >0 results in rounded corners
 void s2h_drawRectangleAA(inout ContextGather ui, vec2 pxA, vec2 pxB, vec4 borderColor, vec4 innerColor, float pxThickness);
 // anti aliased, px position should be pixel centered (+0.5)
-void s2h_drawCrosshair(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 color, float pxThickness);
+// uses ui.lineWidth
+void s2h_drawCrosshair(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 color);
 // hard edges, anti aliased, px position should be pixel centered (+0.5)
-void s2h_drawLine(inout ContextGather ui, vec2 pxBegin, vec2 pxEnd, vec4 color, float pxThickness);
+// uses ui.lineWidth
+void s2h_drawLine(inout ContextGather ui, vec2 pxBegin, vec2 pxEnd, vec4 color);
 // anti aliased px position should be pixel centered (+0.5)
+// uses ui.lineWidth
 void s2h_drawArrow(inout ContextGather ui, vec2 pxStart, vec2 pxEnd, vec4 color, float arrowHeadLength, float arrowHeadWidth);
 // anti aliased px position should be pixel centered (+0.5)
 void s2h_drawTriangle(inout ContextGather ui, s2h_Triangle tri, vec4 color);
@@ -416,7 +420,7 @@ void s2h_printCharacter(inout ContextGather ui, uint ascii)
  const uint _7 = 55u;
  const uint _8 = 56u;
  const uint _9 = 57u;
- const int _S2H_VERSION = 11;
+ const int _S2H_VERSION = 12;
 
 void s2h_init(out ContextGather ui, vec2 inPxPos)
 {
@@ -583,9 +587,9 @@ void s2h_drawDisc(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 co
 	ui.dstColor = mix(ui.dstColor, vec4(color.rgb, 1), color.a * mask);
 }
 
-void s2h_drawCircle(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 color, float pxThickness)
+void s2h_drawCircle(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 color)
 {
-	float r = pxThickness * 0.5f;
+	float r = ui.lineWidth * 0.5f;
 	vec2 pxLocal = ui.pxPos - pxCenter;
 
 	float len = length(pxLocal);
@@ -640,18 +644,18 @@ void s2h_drawRectangleAA(inout ContextGather ui, vec2 pxA, vec2 pxB, vec4 border
 	ui.dstColor = mix(ui.dstColor, vec4(color.rgb, 1), color.a * maskOuter);
 }
 
-void s2h_drawCrosshair(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 color, float pxThickness)
+void s2h_drawCrosshair(inout ContextGather ui, vec2 pxCenter, float pxRadius, vec4 color)
 {
 	vec2 h = vec2(pxRadius, 0);
 	vec2 v = vec2(0, pxRadius);
 
-	s2h_drawLine(ui, pxCenter - h , pxCenter + h, color, pxThickness);
-	s2h_drawLine(ui, pxCenter - v, pxCenter + v, color, pxThickness);
+	s2h_drawLine(ui, pxCenter - h, pxCenter + h, color);
+	s2h_drawLine(ui, pxCenter - v, pxCenter + v, color);
 }
 
-void s2h_drawLine(inout ContextGather ui, vec2 pxBegin, vec2 pxEnd, vec4 color, float pxThickness)
+void s2h_drawLine(inout ContextGather ui, vec2 pxBegin, vec2 pxEnd, vec4 color)
 {
-	pxThickness++;
+	float pxThickness = ui.lineWidth + 1.0f;
 	float r = pxThickness * 0.5f;
 	vec2 delta = pxEnd - pxBegin;
 	float len = length(delta);
@@ -697,15 +701,13 @@ void s2h_drawArrow(inout ContextGather ui, vec2 pxStart, vec2 pxEnd, vec4 color,
     vec2 direction = vec2(0,1);
     direction = normalize(pxEnd - pxStart);
 
-    const float Thickness = 10.0f;
-
     vec2 lineStart = pxStart;
     // Subtract the arrow length from lineEnd - arrow fits in pxStart...pxEnd
     vec2 lineEnd = pxEnd - direction * arrowHeadLength;
 
     vec2 perpendicularDir = normalize(vec2(direction.y, -direction.x)); 
 
-    s2h_drawLine(ui, lineStart, lineEnd, color, Thickness);
+	s2h_drawLine(ui, lineStart, lineEnd, color);
 
     s2h_Triangle triA;
     triA.A = lineEnd - perpendicularDir * arrowHeadWidth;

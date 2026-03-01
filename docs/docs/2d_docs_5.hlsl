@@ -111,9 +111,19 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
 
+
+
+
+
     s2h_drawRectangleAA(ui, float2(100, 10), float2(300, 90), float4(1,0,0,1), float4(1,1,0,1), 5.0f);
     s2h_drawRectangleAA(ui, float2(200, 50), float2(400, 65), float4(0,0,1,1), float4(0,1,1,1), 3.0f);
     s2h_drawRectangleAA(ui, float2(150, 25), float2(350, 75), float4(1,1,1,1), float4(0,0,0,0.5f), 2.0f);
+
+
+
+
+
+
 
 
 

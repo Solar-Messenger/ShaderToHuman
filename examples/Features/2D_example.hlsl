@@ -197,30 +197,54 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
         // draw bottom layer first
-        s2h_drawRectangleAA(ui, float2(250,220 + 20), float2(350,280 + 20), white, UIState[0].colorSlider1, UIState[0].sizeSliders.y);
+		s2h_drawRectangleAA(ui, float2(250, 220 + 20), float2(350, 280 + 20), white, UIState[0].colorSlider1, UIState[0].sizeSliders.y);
         // then draw top layer
-        s2h_drawRectangleAA(ui, float2(220,190 + 20), float2(280,260 + 20), white, UIState[0].colorSlider0, UIState[0].sizeSliders.x);
+		s2h_drawRectangleAA(ui, float2(220, 190 + 20), float2(280, 260 + 20), white, UIState[0].colorSlider0, UIState[0].sizeSliders.x);
 
 
-
-        s2h_drawCircle(ui, float2(50, 40 + 80), 20.0f, red, 2.0f);
-        s2h_drawCircle(ui, float2(50, 40 + 80), 30.0f, green, 4.0f);
-        s2h_drawCrosshair(ui, float2(190 - 140, 40 + 80), 10.0f, blue, 3.0f);
+		{
+			float backup = ui.lineWidth;
+			ui.lineWidth = 2.0f;
+			s2h_drawCircle(ui, float2(50, 40 + 80), 20.0f, red);
+			ui.lineWidth = 4.0f;
+			s2h_drawCircle(ui, float2(50, 40 + 80), 30.0f, green);
+			ui.lineWidth = 3.0f;
+			s2h_drawCrosshair(ui, float2(190 - 140, 40 + 80), 10.0f, blue);
+			ui.lineWidth = backup;
+		}
 
         {
-            float time = S2S_TIME();
+			float time =  S2S_TIME();
             float2 center = float2(50, 200);
             float2 sc = float2(sin(time), cos(time)) * 20.0f;
-            s2h_drawLine(ui, center + sc, center - sc, blue, 12.0f);
+			float backup = ui.lineWidth;
+			ui.lineWidth = 12.0f;
+			s2h_drawLine(ui, center + sc, center - sc, blue);
+			ui.lineWidth = backup;
+
         }
 
         // single pixel wide sharp white cross hair with black outline
-        s2h_drawCrosshair(ui, float2(100, 90 + 30) + 0.5f, 10.0f, float4(0, 0, 0, 1), 3.0f);
-        s2h_drawCrosshair(ui, float2(100, 90 + 30) + 0.5f, 10.0f, float4(1, 1, 1, 1), 1.0f);
+		{
+			float backup = ui.lineWidth;
+			ui.lineWidth = 3.0f;
+			s2h_drawCrosshair(ui, float2(100, 90 + 30) + 0.5f, 10.0f, float4(0, 0, 0, 1));
+			ui.lineWidth = 1.0f;
+			s2h_drawCrosshair(ui, float2(100, 90 + 30) + 0.5f, 10.0f, float4(1, 1, 1, 1));
+			ui.lineWidth = backup;
+		}
+
+		{
+			float backup = ui.lineWidth;
 
         // 2 pixel sharp white sharp white cross hair with black outline
-        s2h_drawCrosshair(ui, float2(130, 90 + 30), 10.0f, float4(0, 0, 0, 1), 4.0f);
-        s2h_drawCrosshair(ui, float2(130, 90 + 30), 10.0f, float4(1, 1, 1, 1), 2.0f);
+			ui.lineWidth = 4.0f;
+			s2h_drawCrosshair(ui, float2(130, 90 + 30), 10.0f, float4(0, 0, 0, 1));
+			ui.lineWidth = 2.0f;
+			s2h_drawCrosshair(ui, float2(130, 90 + 30), 10.0f, float4(1, 1, 1, 1));
+			ui.lineWidth = backup;
+		}
+	
 
         eye(ui, float2(450, 240));
         eye(ui, float2(510, 240));

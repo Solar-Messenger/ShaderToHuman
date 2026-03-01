@@ -36,6 +36,8 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         bool leftMouseClicked = leftMouse && !/*$(Variable:MouseStateLastFrame)*/.z;
 
         ui.textColor.rgb = float3(1,1,1);
+
+		ui.lineWidth = 10.0f;
         
         float2 center = dimensions/2.f;
         float lineLength = length(ui.mouseInput.xy - center);

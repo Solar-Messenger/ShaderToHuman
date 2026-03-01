@@ -70,15 +70,22 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
         float4 green = float4(0, 1, 0, 1);
         float4 blue = float4(0, 0, 1, 1);
         float4 white = float4(1, 1, 1, 1);
-        s2h_drawCircle(ui, float2(190 - 140, 40 + 80), 20, red, 2.0f);
-        s2h_drawCircle(ui, float2(190 - 140, 40 + 80), 30, green, 4.0f);
+		
+		
+		float backup = ui.lineWidth;
+
+		ui.lineWidth = 2.0f;
+        s2h_drawCircle(ui, float2(190 - 140, 40 + 80), 20, red);
+		ui.lineWidth = 4.0f;
+        s2h_drawCircle(ui, float2(190 - 140, 40 + 80), 30, green);
 
         for(int i = 0; i < 13; ++i )
         {
             float2 center = float2(390 - 140 - 30, 80 + 40);
             float f = i / 13.0f * 2 * 3.14159265;
             float2 d = float2(sin(f), cos(f)); 
-            s2h_drawLine(ui, center + d * 20.0f, center + d * 50.0f, blue, 6.0f);
+			ui.lineWidth = 6.0f;
+            s2h_drawLine(ui, center + d * 20.0f, center + d * 50.0f, blue);
         }
 
         // s2h_drawRectangle()
@@ -95,16 +102,23 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 
         // s2h_drawCrosshair()
         {
-            s2h_drawCrosshair(ui, float2(190 - 140, 40 + 80), 10, blue, 3.0f);
+			ui.lineWidth = 3.0f;
+            s2h_drawCrosshair(ui, float2(190 - 140, 40 + 80), 10, blue);
 
             // single pixel wide sharp white cross hair with black outline
-            s2h_drawCrosshair(ui, float2(100, 90 + 30) + 0.5f, 10, float4(0, 0, 0, 1), 3);
-            s2h_drawCrosshair(ui, float2(100, 90 + 30) + 0.5f, 10, float4(1, 1, 1, 1), 1);
+			ui.lineWidth = 3.0f;
+            s2h_drawCrosshair(ui, float2(100, 90 + 30) + 0.5f, 10, float4(0, 0, 0, 1));
+			ui.lineWidth = 1.0f;
+            s2h_drawCrosshair(ui, float2(100, 90 + 30) + 0.5f, 10, float4(1, 1, 1, 1));
 
             // 2 pixel sharp white sharp white cross hair with black outline
-            s2h_drawCrosshair(ui, float2(130, 90 + 30), 10, float4(0, 0, 0, 1), 4);
-            s2h_drawCrosshair(ui, float2(130, 90 + 30), 10, float4(1, 1, 1, 1), 2);
-        }
+			ui.lineWidth = 4.0f;
+            s2h_drawCrosshair(ui, float2(130, 90 + 30), 10, float4(0, 0, 0, 1));
+			ui.lineWidth = 2.0f;
+            s2h_drawCrosshair(ui, float2(130, 90 + 30), 10, float4(1, 1, 1, 1));
+		}
+
+		ui.lineWidth = backup;
 
         // s2h_drawDisc()
         {

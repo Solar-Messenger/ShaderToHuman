@@ -155,6 +155,16 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 
 
 
+
+
+
+
+
+
+
+
+
+
     float3 background = float3(0.7f, 0.4f, 0.4f);
     float3 linearColor = background * (1.0f - ui.dstColor.a) + ui.dstColor.rgb;
 

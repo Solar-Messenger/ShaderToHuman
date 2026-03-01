@@ -102,9 +102,19 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
 
 
-    s2h_drawCircle(ui, vec2(100, 50), 40.0f, vec4(1,0,0,1), 1.0f);
-    s2h_drawCircle(ui, vec2(200, 50), 20.0f, vec4(0,1,0,1), 5.0f);
-    s2h_drawCircle(ui, vec2(150, 50), 30.0f, vec4(0,0,0,0.5f), 8.0f);
+	ui.lineWidth = 1.0f;
+    s2h_drawCircle(ui, vec2(100, 50), 40.0f, vec4(1,0,0,1));
+	ui.lineWidth = 5.0f;
+    s2h_drawCircle(ui, vec2(200, 50), 20.0f, vec4(0,1,0,1));
+	ui.lineWidth = 8.0f;
+    s2h_drawCircle(ui, vec2(150, 50), 30.0f, vec4(0,0,0,0.5f));
+
+
+
+
+
+
+
 
 
 
