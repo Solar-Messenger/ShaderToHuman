@@ -728,23 +728,23 @@ void s2h_coordinateSystem(inout ContextGather ui, float2 pxOrigin, float4 domain
 	// floor() to snap to pixel grid for consistent visuals
 	pxOrigin = floor(pxOrigin);
 
-	const bool yIsUp = (flags & 0x1u) != 0u;
-	const bool gridLines = (flags & 0x2u) != 0u;
+	bool yIsUp = (flags & 0x1u) != 0u;
+	bool gridLines = (flags & 0x2u) != 0u;
 	
 	float4 color = ui.textColor;
 	
-	const float pxDotSize = ui.lineWidth;
+	float pxDotSize = ui.lineWidth;
 	// todo: refine math to be consistent in grid size
-	float2 pxD = frac(floor(ui.pxPos - pxOrigin + pxDotSize / 2) / gridSize) * gridSize;
+	float2 pxD = frac(floor(ui.pxPos - pxOrigin + pxDotSize / 2.0f) / gridSize) * gridSize;
 
 	if (gridLines)
 	{
-		if (all(pxD > floor(pxDotSize)))
+		if (pxD.x > floor(pxDotSize) && pxD.y > floor(pxDotSize))
 			gridColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	}
 	else
 	{
-		if (any(pxD > floor(pxDotSize)))
+		if (pxD.x > floor(pxDotSize) || pxD.y > floor(pxDotSize))
 			gridColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	}
 	
@@ -756,13 +756,13 @@ void s2h_coordinateSystem(inout ContextGather ui, float2 pxOrigin, float4 domain
 
 	// X axis
 	if (pxD.x < backupLineWidth)
-		ui.lineWidth *= 2;
+		ui.lineWidth *= 2.0f;
 	s2h_drawArrow(ui, float2(pxDomain.x, pxOrigin.y), float2(pxDomain.z, pxOrigin.y), color, 16.0f, 8.0f);
 
 	// Y axis
 	ui.lineWidth = backupLineWidth;
 	if (pxD.y < backupLineWidth)
-		ui.lineWidth *= 2;
+		ui.lineWidth *= 2.0f;
 
 	if (yIsUp)
 		s2h_drawArrow(ui, float2(pxOrigin.x, pxDomain.w), float2(pxOrigin.x, pxDomain.y), color, 16.0f, 8.0f);
