@@ -163,7 +163,15 @@ void s2h_drawArrow(inout ContextGather ui, vec2 pxStart, vec2 pxEnd, vec4 color,
 void s2h_drawTriangle(inout ContextGather ui, s2h_Triangle tri, vec4 color);
 // 256x32 horizontal color ramp in sRGB space, 128 should be in the middle, RGB color gradient on outside
 void s2h_drawSRGBRamp(inout ContextGather ui, vec2 pxPos);
-
+// draw a cartesian XY coordinate system with 2 arrows and unit markers
+// using ui.textColor and ui.lineWidth
+// @param pxOrigin position of 0,0 in pixel coordinates
+// @param domain (minX, minY)-(maxX, maxY)
+// @param pxScale one domain unit in pixels
+// @param gridSize in unit space
+// @param gridColor e.g. float4(1.0f, 1.0f, 1.0f, 0.25f) 
+// @param flags defaut:0, add up bit values, 0x1:Y is up, 0x2:gridLines
+void s2h_coordinateSystem(inout ContextGather ui, vec2 pxOrigin, vec4 domain, float pxScale, float gridSize, vec4 gridColor, uint flags);
 
 // ------------------------------------------
 
@@ -420,7 +428,7 @@ void s2h_printCharacter(inout ContextGather ui, uint ascii)
  const uint _7 = 55u;
  const uint _8 = 56u;
  const uint _9 = 57u;
- const int _S2H_VERSION = 12;
+ const int _S2H_VERSION = 13;
 
 void s2h_init(out ContextGather ui, vec2 inPxPos)
 {
@@ -748,6 +756,55 @@ void s2h_drawSRGBRamp(inout ContextGather ui, vec2 pxPos)
 	ui.scale = backup.scale;
 	ui.textColor = backup.textColor;
 	ui.pxLeftX = backup.pxLeftX;
+}
+
+void s2h_coordinateSystem(inout ContextGather ui, vec2 pxOrigin, vec4 domain, float pxScale, float gridSize, vec4 gridColor, uint flags)
+{
+	// floor() to snap to pixel grid for consistent visuals
+	pxOrigin = floor(pxOrigin);
+
+	bool yIsUp = (flags & 0x1u) != 0u;
+	bool gridLines = (flags & 0x2u) != 0u;
+	
+	vec4 color = ui.textColor;
+	
+	float pxDotSize = ui.lineWidth;
+	// todo: refine math to be consistent in grid size
+	vec2 pxD = fract(floor(ui.pxPos - pxOrigin + pxDotSize / 2.0f) / gridSize) * gridSize;
+
+	if (gridLines)
+	{
+		if (pxD.x > floor(pxDotSize) && pxD.y > floor(pxDotSize))
+			gridColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+	else
+	{
+		if (pxD.x > floor(pxDotSize) || pxD.y > floor(pxDotSize))
+			gridColor = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+	
+	vec4 pxDomain = domain * pxScale + vec4(pxOrigin, pxOrigin);
+
+	s2h_drawRectangle(ui, pxDomain.xy, pxDomain.zw, gridColor);
+	
+	float backupLineWidth = ui.lineWidth;
+
+	// X axis
+	if (pxD.x < backupLineWidth)
+		ui.lineWidth *= 2.0f;
+	s2h_drawArrow(ui, vec2(pxDomain.x, pxOrigin.y), vec2(pxDomain.z, pxOrigin.y), color, 16.0f, 8.0f);
+
+	// Y axis
+	ui.lineWidth = backupLineWidth;
+	if (pxD.y < backupLineWidth)
+		ui.lineWidth *= 2.0f;
+
+	if (yIsUp)
+		s2h_drawArrow(ui, vec2(pxOrigin.x, pxDomain.w), vec2(pxOrigin.x, pxDomain.y), color, 16.0f, 8.0f);
+	else
+		s2h_drawArrow(ui, vec2(pxOrigin.x, pxDomain.y), vec2(pxOrigin.x, pxDomain.w), color, 16.0f, 8.0f);
+
+	ui.lineWidth = backupLineWidth;
 }
 
 void s2h_printDisc(inout ContextGather ui, vec4 color) 
