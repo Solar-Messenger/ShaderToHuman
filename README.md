@@ -13,10 +13,10 @@ rapid prototyping in shaders becomes straightforward. Use PrintF debugging, draw
 
 S2H Features in Gigi: ![Screenshot](images/teaser.png)
 S2H used to render [Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting) with a stochastic rasterizer (input .ply was procedurally generated):
-![GaussianSplatting](images/gaussianSplatting.png)
+![GaussianSplatting|800x600,50%](images/gaussianSplatting.png)
 
 S2H used to implement interactive pannig, zooming and debugging pixel colors:
-[coordinateSystem](images/coordinateSystem.png)
+![coordinateSystem](images/coordinateSystem.png)
 
 ## Installing the web documentation and running locally
 This is only needed for development on the library. Windows only.
