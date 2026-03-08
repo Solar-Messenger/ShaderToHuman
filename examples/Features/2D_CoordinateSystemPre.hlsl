@@ -26,6 +26,7 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	if (all(UIState[0].PanAndScale == 0.0f))
 	{
 		UIState[0].PanAndScale.xyz = float3(0, 0, 0);
+//		UIState[0].PanAndScale.xyz = float3(-500, -300, -200);
 	}
 
 	{
