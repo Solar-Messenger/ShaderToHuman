@@ -507,40 +507,6 @@
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
-                },
-                {
-                    "name": "UIState",
-                    "access": "UAV",
-                    "type": "Buffer",
-                    "buffer": {
-                        "typeStruct": {
-                            "name": "UIState"
-                        },
-                        "PODAsStructuredBuffer": false
-                    }
-                }
-            ]
-        },
-        {
-            "name": "CoordinateSystemPre",
-            "fileName": "2D_CoordinateSystemPre.hlsl",
-            "entryPoint": "mainCS",
-            "NumThreads": [
-                1,
-                1,
-                1
-            ],
-            "resources": [
-                {
-                    "name": "UIState",
-                    "access": "UAV",
-                    "type": "Buffer",
-                    "buffer": {
-                        "typeStruct": {
-                            "name": "UIState"
-                        },
-                        "PODAsStructuredBuffer": false
-                    }
                 }
             ]
         }
@@ -949,7 +915,6 @@
                     {},
                     {},
                     {},
-                    {},
                     {}
                 ],
                 "vertexShader": {
@@ -979,9 +944,7 @@
                     {
                         "node": "QuadPost"
                     },
-                    {
-                        "node": "Pre"
-                    },
+                    {},
                     {},
                     {},
                     {},
@@ -1224,7 +1187,6 @@
                     1359.0
                 ],
                 "linkProperties": [
-                    {},
                     {}
                 ],
                 "connections": [
@@ -1232,11 +1194,6 @@
                         "srcPin": "Output",
                         "dstNode": "I",
                         "dstPin": "resource"
-                    },
-                    {
-                        "srcPin": "UIState",
-                        "dstNode": "Pre",
-                        "dstPin": "UIState"
                     }
                 ],
                 "shader": {
@@ -1246,28 +1203,6 @@
                     "variable": {
                         "name": "iFrameBufferSize"
                     }
-                }
-            }
-        },
-        {
-            "actionComputeShader": {
-                "name": "Pre",
-                "editorPos": [
-                    368.0,
-                    1408.0
-                ],
-                "linkProperties": [
-                    {}
-                ],
-                "connections": [
-                    {
-                        "srcPin": "UIState",
-                        "dstNode": "UIState",
-                        "dstPin": "resource"
-                    }
-                ],
-                "shader": {
-                    "name": "CoordinateSystemPre"
                 }
             }
         }

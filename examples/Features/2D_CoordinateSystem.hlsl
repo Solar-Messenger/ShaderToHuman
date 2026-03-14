@@ -47,134 +47,26 @@ void mainCS(uint2 DTid : SV_DispatchThreadID)
 	float4 background = float4(0.01f, 0.01f, 0.1f, 1.0f);
 	float4 linearColor = background;
 
-	float panScale = pow(2, UIState[0].PanAndScale.z * 0.02f);
-
 	// pixel perfect UI without pan and scale
-    {
-		ContextGather ui;
-
-		pxPos += UIState[0].PanAndScale.xy;
-		pxPos *= panScale;
-		
-		// snap pxPos
-		float2 snappedPxPos = floor(pxPos) + 0.5f;
-		
-		s2h_init(ui, snappedPxPos);
-		s2h_setCursor(ui, float2(10, 10));
-		ui.s2h_State = UIState[0].s2h_State;
-
-		ui.mouseInput = int4( /*$(Variable:MouseState)*/.xy, /*$(Variable:MouseState)*/.z, /*$(Variable:MouseState)*/.w);
-		bool leftMouse = /*$(Variable:MouseState)*/.z;
-		bool leftMouseClicked = leftMouse && ! /*$(Variable:MouseStateLastFrame)*/.z;
-
-		s2h_coordinateSystem(ui, float2(50, 130), float4(-30.0f, -30.0f, 250.0f, 250.0f), 1.0f, 20.0f, float4(1, 1, 1, 0.25f), 0);
-		ui.lineWidth = 1.0f;
-		s2h_coordinateSystem(ui, float2(340, 120), float4(-10.0f, -100.0f, 150.0f, 10.0f), 1.0f, 20.0f, float4(1, 1, 1, 0.25f), 3);
+	ContextGather ui;
 	
-		s2h_printTxt(ui, _c, _o, _o, _r, _d, _i);
-		s2h_printTxt(ui, _n, _a, _t, _e, _S, _y);
-		s2h_printTxt(ui, _s, _t, _e, _m);
+	// snap pxPos
+	float2 snappedPxPos = floor(pxPos) + 0.5f;
 		
-		int2 pixel = (int2)pxPos;
+	s2h_init(ui, snappedPxPos);
+	s2h_setScale(ui, 2);
+	s2h_setCursor(ui, float2(10, 10));
 
-		bool outsideFrameBuffer = !(all(pixel >= 0) && all(pixel < /*$(Variable:iFrameBufferSize)*/));
-		
-		// fade in pixel grid with strong magnification
-		{
-			float4 gridColor = float4(1, 1, 1, 0.05f);
-			
-			float2 subPixelPos = frac(pxPos);
-			float2 subPixelSideDist = min(subPixelPos, 1.0f - subPixelPos);
-			// 0 at border
-			float dist = min(subPixelSideDist.x, subPixelSideDist.y);
-			// 0..1
-			float alphaGrid = saturate(1.0f - dist / panScale);
-
-			float gridLineSize = 20.0f;
-			float alpha = 1.0f - gridTextureGradBox(pxPos + 0.5f / gridLineSize, float2(panScale, 0), float2(0, panScale), gridLineSize);
-		
-			if (outsideFrameBuffer)
-				alpha = 0.0f;
-
-			ui.dstColor = lerp(ui.dstColor, float4(gridColor.rgb, 1), alpha * gridColor.a);
-		}
-
-		s2h_deinit(ui, UIState[0].s2h_State);
-		linearColor = linearColor * (1.0f - ui.dstColor.a) + ui.dstColor;
-		
-		// pixel position inside pixel square
-		{
-			ContextGather uiPixel;
-			s2h_init(uiPixel, frac(pxPos) * 8 * 5 + 0.5f);
-			uiPixel.textColor = float4(1, 0.6f, 0.6f, 0.1f);
-			
-			// fade in with strong magnification
-			uiPixel.textColor.a *= saturate(1.0f / panScale - 8.0f);
-
-			if (outsideFrameBuffer)
-				uiPixel.textColor.a  = 0.0f;
-
-			// left top
-			s2h_setCursor(uiPixel, int2(3, 3));
-			
-			s2h_printInt(uiPixel, (int)pxPos.x);
-			s2h_printLF(uiPixel);
-			s2h_printInt(uiPixel, (int)pxPos.y);
-			linearColor = linearColor * (1.0f - uiPixel.dstColor.a) + uiPixel.dstColor;
-		}
-	}
+	s2h_coordinateSystem(ui, float2(50, 130), float4(-30.0f, -30.0f, 250.0f, 250.0f), 1.0f, 20.0f, float4(1, 1, 1, 0.25f), 0);
+	ui.lineWidth = 1.0f;
+	s2h_coordinateSystem(ui, float2(440, 150), float4(-10.0f, -120.0f, 150.0f, 10.0f), 1.0f, 20.0f, float4(1, 1, 1, 0.25f), 3);
 	
-	// pixel perfect UI without pan and scale
-	{
-		ContextGather ui;
-		s2h_init(ui, DTid + 0.5f);
-		s2h_setCursor(ui, float2(10, 480));
-		ui.s2h_State = UIState[0].s2h_State;
-#ifdef S2H_GLSL
-        bool leftMouse = false;
-        bool leftMouseClicked = false;
-#else
-		bool leftMouse = /*$(Variable:MouseState)*/.z;
-		bool leftMouseClicked = leftMouse && ! /*$(Variable:MouseStateLastFrame)*/.z;
-#endif
-		ui.mouseInput = S2S_MOUSE();
+	s2h_printTxt(ui, _s, _2, _h, _UNDERSCORE);
+	s2h_printTxt(ui, _c, _o, _o, _r, _d, _i);
+	s2h_printTxt(ui, _n, _a, _t, _e, _S, _y);
+	s2h_printTxt(ui, _s, _t, _e, _m);
 		
-		ui.textColor.rgb = float3(1, 1, 0.1f);
-		
-		s2h_setScale(ui, 2.0f);
-		s2h_printTxt(ui, _X, _Y, _COLON, _SPACE);
-		s2h_printFloat(ui, UIState[0].PanAndScale.x);
-		s2h_printTxt(ui, _SPACE);
-		s2h_printFloat(ui, UIState[0].PanAndScale.y);
-		s2h_printLF(ui);
-		s2h_printTxt(ui, _SPACE, _S, _COLON, _SPACE);
-		s2h_printFloat(ui, panScale);
-		s2h_printLF(ui);
-		s2h_printLF(ui);
-		
-		s2h_printTxt(ui, _R, _e, _s, _e, _t);
-		ui.buttonColor = float4(1, 0, 0, 1);
-		if (s2h_button(ui, 5) && leftMouse)
-		{
-			UIState[0].PanAndScale.xyz = float3(0, 0, 0);
-		}
-		s2h_printLF(ui);
-		s2h_printLF(ui);
-		
-		s2h_setScale(ui, 1.0f);
-		s2h_printTxt(ui, _SPACE, _l, _e, _f, _t, _SPACE);
-		s2h_printTxt(ui, _M, _o, _u, _s, _e);
-		s2h_printTxt(ui, _D, _r, _a, _g, _COLON);
-		s2h_printTxt(ui, _SPACE, _P, _a, _n);
-		s2h_printLF(ui);
-		s2h_printLF(ui);
-		s2h_printTxt(ui, _r, _i, _g, _h, _t, _SPACE);
-		s2h_printTxt(ui, _M, _o, _u, _s, _e);
-		s2h_printTxt(ui, _D, _r, _a, _g, _COLON);
-		s2h_printTxt(ui, _SPACE, _S, _c, _a, _l, _e);
-
-		linearColor = linearColor * (1.0f - ui.dstColor.a) + ui.dstColor;
-	}
+	linearColor = linearColor * (1.0f - ui.dstColor.a) + ui.dstColor;
 		
 	Output[DTid] = float4(s2h_accurateLinearToSRGB(linearColor.rgb), linearColor.a);
 }
